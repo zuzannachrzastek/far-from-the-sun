@@ -1,4 +1,4 @@
-package main.java.pl.edu.agh.farfromthesun.algorithm;
+package pl.edu.agh.farfromthesun.algorithm;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;

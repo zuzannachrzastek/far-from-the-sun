@@ -1,8 +1,13 @@
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\map\Point.java
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\app\App.java
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\forecast\WeatherDownloader.java
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\map\Map.java
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\app\Component.java
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\Algorithm.java
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\forecast\Forecast.java
-E:\ZUZIA\studia\5 semestr\Technologie obiektowe 2\far-from-the-sun\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\AlgorithmObserver.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\ParametersPanel.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\Algorithm.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\app\Component.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\ParametersInput.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\ParametersSpinner.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\ParametersDialog.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\map\Map.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\forecast\WeatherDownloader.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\map\Point.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\AlgorithmObserver.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\app\App.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\algorithm\ActionButtons.java
+C:\wamp\www\far-from-the-sun\src\main\java\pl\edu\agh\farfromthesun\forecast\Forecast.java

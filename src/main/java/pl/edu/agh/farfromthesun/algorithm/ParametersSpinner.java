@@ -1,4 +1,4 @@
-package main.java.pl.edu.agh.farfromthesun.algorithm;
+package pl.edu.agh.farfromthesun.algorithm;
 
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;

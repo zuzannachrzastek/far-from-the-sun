@@ -1,9 +1,9 @@
-package main.java.pl.edu.agh.farfromthesun.algorithm;
+package pl.edu.agh.farfromthesun.algorithm;
 
 import java.util.List;
 
-import main.java.pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Point;
 
 public interface AlgorithmObserver {
-    public void handleResults(List<Point> locations);
+	public void handleResults(List<Point> locations);
 }
