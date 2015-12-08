@@ -11,12 +11,4 @@
 	<groupId>pl.edu.agh.farfromthesun</groupId>
 	<artifactId>project</artifactId>
 	<version>1.0-SNAPSHOT</version>
-
-	<dependencies>
-		<dependency>
-			<groupId>com.github.martinseeler</groupId>
-    		<artifactId>forecast-io-wrapper</artifactId>
-    		<version>1.0-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
 </project>
