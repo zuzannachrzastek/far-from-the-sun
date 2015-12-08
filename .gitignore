@@ -1,0 +1,18 @@
+### IntelliJ ###
+*.iml
+*.ipr
+*.iws
+.idea/
+
+### Java ###
+# Package Files #
+*.jar
+*.war
+*.ear
+### Linux ###
+.*
+!.gitignore
+!.git*
+!.travis.yml
+### Maven ###
+target/
