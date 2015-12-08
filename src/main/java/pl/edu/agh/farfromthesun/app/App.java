@@ -30,5 +30,7 @@ public class App extends JFrame {
 		map.initialize(app);
 		forecast.initialize(app);
 		algorithm.initialize(app);
+		
+		app.revalidate();
 	}
 }
