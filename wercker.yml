@@ -1,15 +1,5 @@
-box: wercker/android
-# Build definition
+box: maven:latest
 build:
-  # The steps that will be executed on build
   steps:
-    - script:
-        name: show base information
-        code: |
-          pwd
-          mvn -v
-    # A step that executes `maven build` command
-    - script:
-        name: run maven
-        code: |
-          mvn clean verify
+    - xenoterracide/maven:
+        goals: test
