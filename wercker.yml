@@ -1,10 +1,15 @@
-before_script:
-  - bundle install
-
-rspec:
-  script:
-    - bundle exec rspec
-
-rubocop:
-  script:
-    - bundle exec rubocop
+box: wercker/java
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    - script:
+        name: show base information
+        code: |
+          pwd
+          mvn -v
+    # A step that executes `maven build` command
+    - script:
+        name: run maven
+        code: |
+          mvn clean verify
