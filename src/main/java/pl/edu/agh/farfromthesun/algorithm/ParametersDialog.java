@@ -11,14 +11,16 @@ import javax.swing.JPanel;
 class ParametersDialog extends JPanel {
 	private static final long serialVersionUID = 1635902385403603282L;
 	private LinkedList<ParametersPanel> panels;
+	private ParametersPanel algorithmPanel;
+	private ParametersPanel weatherPanel;
 
 	public ParametersDialog() {
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		panels = new LinkedList<ParametersPanel>();
 
-		ParametersPanel algorithmPanel = new ParametersPanel("Algorithm");
+		algorithmPanel = new ParametersPanel("Algorithm");
 
-		algorithmPanel.addParameter("Population size", "population",
+		/*algorithmPanel.addParameter("Population size", "population",
 				new ParametersSpinner(100, 0, 200, 1));
 		algorithmPanel.addParameter("Number of generations", "generations",
 				new ParametersSpinner(50, 0, 200, 1));
@@ -27,9 +29,9 @@ class ParametersDialog extends JPanel {
 		algorithmPanel.addParameter("Mutation rate", "mutation",
 				new ParametersSpinner(0.25, 0, 1, 0.05));
 		algorithmPanel.addParameter("Tournament size", "tournament",
-				new ParametersSpinner(5, 0, 20, 1));
+				new ParametersSpinner(5, 0, 20, 1));*/
 
-		ParametersPanel weatherPanel = new ParametersPanel("Weather");
+		weatherPanel = new ParametersPanel("Weather");
 
 		panels.add(algorithmPanel);
 		panels.add(weatherPanel);
@@ -54,6 +56,10 @@ class ParametersDialog extends JPanel {
 		}
 
 		return values;
+	}
+	
+	public void addParameter(String name, String slug, ParametersInput obj){
+		algorithmPanel.addParameter(name, slug, obj);
 	}
 
 }

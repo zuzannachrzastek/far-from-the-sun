@@ -10,7 +10,8 @@ public class Algorithm implements Component {
 
 	@Override
 	public void initialize(JFrame frame) {
-		frame.getContentPane().add(new ActionButtons(frame, this),
+		Parameters parameters = Parameters.newParameters();
+		frame.getContentPane().add(new ActionButtons(frame, this, parameters),
 				BorderLayout.PAGE_END);
 	}
 
