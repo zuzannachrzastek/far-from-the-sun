@@ -4,15 +4,24 @@
 *.iws
 .idea/
 
+### Eclipse ###
+.classpath
+.project
+.settings/
+
+### Maven ###
+target/
+log/
+
 ### Java ###
+*.class
 # Package Files #
 *.jar
 *.war
 *.ear
+
 ### Linux ###
 .*
 !.gitignore
 !.git*
 !.travis.yml
-### Maven ###
-target/
