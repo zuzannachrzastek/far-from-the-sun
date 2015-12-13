@@ -1,11 +1,13 @@
 package pl.edu.agh.farfromthesun.app;
 
 import java.awt.Dimension;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
 import pl.edu.agh.farfromthesun.algorithm.Algorithm;
 import pl.edu.agh.farfromthesun.forecast.Forecast;
+import pl.edu.agh.farfromthesun.forecast.WeatherDownloader;
 import pl.edu.agh.farfromthesun.map.Map;
 
 public class App extends JFrame {
