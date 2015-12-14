@@ -1,10 +1,12 @@
 package pl.edu.agh.farfromthesun.forecast;
+
 import pl.edu.agh.farfromthesun.map.Point;
+
 import java.time.LocalDate;
 import java.time.Month;
 
 /**
- * Created by Zuzia and Renata on 2015-12-01.
+ * Created by Zuzia on 2015-12-01.
  */
 
 
