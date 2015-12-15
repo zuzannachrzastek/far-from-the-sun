@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
 import pl.edu.agh.farfromthesun.app.Component;
 
 public class Algorithm implements Component {
