@@ -4,9 +4,6 @@ import pl.edu.agh.farfromthesun.map.Point;
 
 import java.time.LocalDate;
 
-/**
- * Created by Renata Domagalska on 13.12.2015.
- */
 public class ForecastData {
 
     private LocalDate date;

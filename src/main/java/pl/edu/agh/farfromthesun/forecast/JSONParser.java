@@ -7,17 +7,18 @@ import pl.edu.agh.farfromthesun.map.Point;
 import java.io.IOException;
 import java.time.LocalDate;
 
+public class JSONParser implements IWeatherParser{
 
-/**
- * Created by Renata Domagalska on 13.12.2015.
- */
-public class JSONParser {
+    private static final int errorWeatherStringLength = 300;
 
     public ForecastData GetForecastDataForSpecificDateAndPoint(LocalDate date, Point point){
         URLConnectionReader urlConnReader = new URLConnectionReader();
         try {
             String forecastDataString = urlConnReader.GetForecastData(GetStringCooridnates(point));
             System.out.print(forecastDataString);
+            if(forecastDataString.length() < errorWeatherStringLength){
+                return null;
+            }
             final JSONObject obj = new JSONObject(forecastDataString);
             final JSONObject forecast = obj.getJSONObject("forecast");
             final JSONObject simpleFormat = forecast.getJSONObject("simpleforecast");
@@ -33,7 +34,6 @@ public class JSONParser {
                     return GetForecastData(fData, date, point);
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

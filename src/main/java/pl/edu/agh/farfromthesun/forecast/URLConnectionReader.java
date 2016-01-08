@@ -7,10 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by Renata Domagalska on 13.12.2015.
- */
-
 public class URLConnectionReader {
 
     //2fdf99a36a9af682 - klucz do WU
