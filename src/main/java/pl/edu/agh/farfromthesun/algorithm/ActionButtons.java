@@ -2,14 +2,18 @@ package pl.edu.agh.farfromthesun.algorithm;
 
 import java.awt.BorderLayout;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import pl.edu.agh.farfromthesun.algorithm.model.*;
+import pl.edu.agh.farfromthesun.map.Point;
 
 public class ActionButtons extends JPanel {
 	private static final long serialVersionUID = 8491592003308755995L;
@@ -22,19 +26,36 @@ public class ActionButtons extends JPanel {
 	private ParametersSpinner tournament;
 	private ParametersComboBox mutations;
 	private ParametersComboBox crossovers;
+	private AlgorithmManager am;
 	
 
-	public ActionButtons(JFrame frame, Algorithm controller, Parameters parameters) {
+	public ActionButtons(JFrame frame, AlgorithmManager am, Parameters parameters) {
 		this.parameters = parameters;
+		this.am = am;
 		JPanel container = new JPanel();
 
 		this.setLayout(new BorderLayout());
 
 		btnStart = new JButton("Start");
 		btnConfig = new JButton("Config");
+		
+		// values created to test
+		
+		List<Point> list = new LinkedList<Point>();
+		list.add(new Point(60, 200));
+		list.add(new Point(180, 200));
+		list.add(new Point(80, 180));
+		list.add(new Point(140, 180));
+		list.add(new Point(20, 160));
+		list.add(new Point(100, 160));
+		list.add(new Point(200, 160));
+		list.add(new Point(140, 140));
+		list.add(new Point(40, 120));		
 
 		btnStart.addActionListener(e -> {
 			JOptionPane.showMessageDialog(frame, "Starting algorithm");
+			// TODO get list from map
+			am.findOptimalTour(list);
 		});
 
 		btnConfig
@@ -95,5 +116,6 @@ public class ActionButtons extends JPanel {
 		parameters.setTournamentSize(((Double)tournament.getInputValue()).intValue());
 		parameters.setMutation((Mutation)mutations.getInputValue());
 		parameters.setCross((Crossover)crossovers.getInputValue());
+		am.update(parameters);
 	}
 }

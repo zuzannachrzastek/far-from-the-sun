@@ -26,9 +26,11 @@ public class Parameters {
 		this.crossovers.add(new EdgeCrossover());
 		this.crossovers.add(new OrderCrossover());
 		this.crossovers.add(new PMX());
+		this.cross = crossovers.get(0);
 		this.mutations = new LinkedList<Mutation>();
 		this.mutations.add(new ScrambleMutation());
-		this.mutations.add(new InversionMutation());		
+		this.mutations.add(new InversionMutation());
+		this.mutation = mutations.get(0);
 	}
 
 
