@@ -8,7 +8,8 @@ import pl.edu.agh.farfromthesun.map.Point;
 public class TourManager {
     private static ArrayList<Point> points = new ArrayList<Point>();
     
-	public TourManager(List<Point> points) {
+	public static void initialize(List<Point> points) {
+		TourManager.points = new ArrayList<Point>();
 		for (Point i : points) {
 			TourManager.points.add(i);
 		}

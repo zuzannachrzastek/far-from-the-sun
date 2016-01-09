@@ -1,6 +1,5 @@
 package pl.edu.agh.farfromthesun.algorithm.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

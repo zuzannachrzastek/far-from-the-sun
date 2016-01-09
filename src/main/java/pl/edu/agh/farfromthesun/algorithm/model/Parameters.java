@@ -34,7 +34,7 @@ public class Parameters {
 	}
 
 
-	private Parameters() {
+	public Parameters() {
 		this(100,50,70,0.25,5);
 	}
 
@@ -87,11 +87,6 @@ public class Parameters {
 	public void setTournamentSize(int tournamentSize) {
 		this.tournamentSize = tournamentSize;
 	}
-	
-	public static final Parameters newParameters() {
-		return new Parameters();
-	}
-
 
 	public Crossover getCross() {
 		return cross;

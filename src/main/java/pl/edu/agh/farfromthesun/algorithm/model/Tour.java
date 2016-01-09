@@ -16,13 +16,14 @@ public class Tour {
 			tour.add(i);
 		}
 	}
-	
-	public Tour(){
+
+	public Tour() {
 		for (int i = 1; i < TourManager.numberOfPoints(); i++) {
 			tour.add(TourManager.getPoint(i));
-	        }
-	        Collections.shuffle(tour);
-	        tour.add(0,TourManager.getPoint(0)); //setting starting point to be first
+		}
+		Collections.shuffle(tour);
+		tour.add(0, TourManager.getPoint(0)); // setting starting point to be
+												// first
 	}
 
 	public void setPoint(int position, Point point) {
@@ -32,15 +33,15 @@ public class Tour {
 	}
 
 	public double getDistance() {
-		if (distance != 0) {
-			return distance;
+		if (distance == 0) {
+			distance += getFirstPoint().distanceTo(getLastPoint());
+
+			for (int i = 1; i < tour.size(); i++) {
+				distance += getPointAt(i).distanceTo(getPointAt(i - 1));
+			}
 		}
-		int tempDistance = 0;
-		tempDistance += tour.get(0).distanceTo(tour.get(tour.size() - 1));
-		for (int i = 1; i < tour.size(); i++) {
-			tempDistance += tour.get(i).distanceTo(tour.get(i - 1));
-		}
-		return tempDistance;
+
+		return distance;
 	}
 
 	// TODO add weather dependency
@@ -48,7 +49,7 @@ public class Tour {
 		if (fitness != 0) {
 			return fitness;
 		}
-		return 1 / getDistance();
+		return 1.0 / getDistance();
 	}
 
 	@Override
@@ -59,12 +60,20 @@ public class Tour {
 		}
 		return result;
 	}
-	
-	public int tourSize(){
+
+	public int tourSize() {
 		return tour.size();
 	}
-	
-	public Point getPointAt(int i){
+
+	public Point getFirstPoint() {
+		return getPointAt(0);
+	}
+
+	public Point getLastPoint() {
+		return getPointAt(tour.size() - 1);
+	}
+
+	public Point getPointAt(int i) {
 		return tour.get(i);
 	}
 
