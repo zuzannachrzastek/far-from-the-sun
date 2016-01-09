@@ -15,7 +15,7 @@ public class JSONParser implements IWeatherParser{
         URLConnectionReader urlConnReader = new URLConnectionReader();
         WeatherLocation forecastToReturn = GetEmptyForecastDataObject(date, point);
         try {
-            String forecastDataString = urlConnReader.GetForecastData(GetStringCooridnates(point));
+            String forecastDataString = urlConnReader.GetForecastData(GetStringCoordinates(point));
 
             if(forecastDataString == null || forecastDataString.length() < errorWeatherStringLength)
                 return GetEmptyForecastDataObject(date, point);
@@ -47,7 +47,7 @@ public class JSONParser implements IWeatherParser{
         return forecastToReturn;
     }
 
-    private String GetStringCooridnates(Location point){
+    private String GetStringCoordinates(Location point){
         return String.valueOf(point.getLat()) + "," + String.valueOf(point.getLon());
     }
 
