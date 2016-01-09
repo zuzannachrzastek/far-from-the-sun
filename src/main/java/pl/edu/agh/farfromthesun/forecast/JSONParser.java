@@ -13,11 +13,13 @@ public class JSONParser implements IWeatherParser{
 
     public WeatherLocation GetForecast(LocalDate date, Location point){
         URLConnectionReader urlConnReader = new URLConnectionReader();
+        WeatherLocation forecastToReturn = GetEmptyForecastDataObject(date, point);
         try {
             String forecastDataString = urlConnReader.GetForecastData(GetStringCooridnates(point));
-            if(forecastDataString == null || forecastDataString.length() < errorWeatherStringLength) {
+
+            if(forecastDataString == null || forecastDataString.length() < errorWeatherStringLength)
                 return GetEmptyForecastDataObject(date, point);
-            }
+
             //System.out.print(forecastDataString);
             final JSONObject obj = new JSONObject(forecastDataString);
             final JSONObject forecast = obj.getJSONObject("forecast");
@@ -25,19 +27,24 @@ public class JSONParser implements IWeatherParser{
             final JSONArray forecastData = simpleFormat.getJSONArray("forecastday");
             final int n = forecastData.length();
 
+            LocalDate currDate = LocalDate.now();
             for (int i = 0; i < n; ++i) {
                 final JSONObject fData = forecastData.getJSONObject(i);
                 final JSONObject day = fData.getJSONObject("date");
                 if(day.getInt("day") == date.getDayOfMonth()
                         && day.getInt("month") == date.getMonthValue()
                         && day.getInt("year") == date.getYear()){
-                    return GetForecastData(fData, date, point);
+                    forecastToReturn = GetForecastData(fData, date, point);
+                    ForecastCache.AddToCache(forecastToReturn);
+                    continue;
                 }
+                ForecastCache.AddToCache(GetForecastData(fData, LocalDate.of(currDate.getYear(), currDate.getMonthValue(),currDate.getDayOfMonth() + i), point));
             }
         } catch (IOException e) {
             e.printStackTrace(); //?
-        }
-        return GetEmptyForecastDataObject(date, point);
+            return GetEmptyForecastDataObject(date, point);
+    }
+        return forecastToReturn;
     }
 
     private String GetStringCooridnates(Location point){

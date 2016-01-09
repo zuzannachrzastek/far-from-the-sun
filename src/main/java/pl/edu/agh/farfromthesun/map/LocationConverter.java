@@ -49,7 +49,7 @@ public class LocationConverter {
     private void makeCoordinates() {
         if (places.isEmpty()) return;
         for (Location p : places) {
-            Coordinate c = new Coordinate(p.getLatitude(), p.getLongitude());
+            Coordinate c = new Coordinate(p.getLat(), p.getLon());
             coordinates.add(c);
         }
     }
