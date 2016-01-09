@@ -3,15 +3,16 @@ package pl.edu.agh.farfromthesun.forecast;
 import pl.edu.agh.farfromthesun.map.Location;
 
 import java.time.LocalDate;
-import java.time.Month;
 
-public class WeatherDownloader {
-    public WeatherLocation GetForecast(){
-        JSONParser parser = new JSONParser();
-        return parser.GetForecastDataForSpecificDateAndPoint(LocalDate.of(2016, Month.JANUARY, 9), new Location(50.060, 19.959));
+public class WeatherDownloader implements IWeatherDownloader{
+
+    public WeatherLocation GetForecast(LocalDate date, Location location){
+        IWeatherParser parser = new JSONParser();
+        return parser.GetForecast(date, location);
     }
+
     public void writeData(){
-        WeatherLocation fd = GetForecast();
+        WeatherLocation fd = GetForecast(LocalDate.now(), new Location(50.060, 19.959));
         if(fd == null){
             System.out.println("Forecast has not been downloaded - date out of range or bad coordinates");
             return;

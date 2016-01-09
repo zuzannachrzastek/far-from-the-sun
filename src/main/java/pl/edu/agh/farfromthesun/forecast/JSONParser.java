@@ -11,7 +11,7 @@ public class JSONParser implements IWeatherParser{
 
     private static final int errorWeatherStringLength = 300;
 
-    public WeatherLocation GetForecastDataForSpecificDateAndPoint(LocalDate date, Location point){
+    public WeatherLocation GetForecast(LocalDate date, Location point){
         URLConnectionReader urlConnReader = new URLConnectionReader();
         try {
             String forecastDataString = urlConnReader.GetForecastData(GetStringCooridnates(point));
