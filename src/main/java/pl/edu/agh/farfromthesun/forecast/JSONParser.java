@@ -35,7 +35,7 @@ public class JSONParser implements IWeatherParser{
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //?
         }
         return GetEmptyForecastDataObject(date, point);
     }
