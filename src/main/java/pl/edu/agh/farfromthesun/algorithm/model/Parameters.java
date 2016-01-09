@@ -1,4 +1,7 @@
-package pl.edu.agh.farfromthesun.algorithm;
+package pl.edu.agh.farfromthesun.algorithm.model;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Parameters {
 	
@@ -7,6 +10,10 @@ public class Parameters {
 	private int minimumFitness;
 	private double mutationRate;
 	private int tournamentSize;
+	private Crossover cross;
+	private List<Crossover> crossovers;
+	private Mutation mutation;
+	private List<Mutation> mutations;
 
 	
 	public Parameters(int populationSize, int numberOfGenerations, int minimumFitness, double mutationRate, int tournamentSize) {
@@ -15,10 +22,19 @@ public class Parameters {
 		this.setMinimumFitness(minimumFitness);
 		this.setMutationRate(mutationRate);
 		this.setTournamentSize(tournamentSize);
+		this.crossovers = new LinkedList<Crossover>();
+		this.crossovers.add(new EdgeCrossover());
+		this.crossovers.add(new OrderCrossover());
+		this.crossovers.add(new PMX());
+		this.cross = crossovers.get(0);
+		this.mutations = new LinkedList<Mutation>();
+		this.mutations.add(new ScrambleMutation());
+		this.mutations.add(new InversionMutation());
+		this.mutation = mutations.get(0);
 	}
 
 
-	private Parameters() {
+	public Parameters() {
 		this(100,50,70,0.25,5);
 	}
 
@@ -71,8 +87,31 @@ public class Parameters {
 	public void setTournamentSize(int tournamentSize) {
 		this.tournamentSize = tournamentSize;
 	}
+
+	public Crossover getCross() {
+		return cross;
+	}
+
+
+	public void setCross(Crossover cross) {
+		this.cross = cross;
+	}
+
+
+	public Mutation getMutation() {
+		return mutation;
+	}
+
+
+	public void setMutation(Mutation mutation) {
+		this.mutation = mutation;
+	}
 	
-	public static final Parameters newParameters() {
-		return new Parameters();
+	public Nameable[] getMutations(){
+		return mutations.toArray(new Nameable[0]);		
+	}
+	
+	public Nameable[] getCrossovers(){
+		return crossovers.toArray(new Nameable[0]);
 	}
 }

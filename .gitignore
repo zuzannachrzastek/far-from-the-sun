@@ -1,27 +1,12 @@
-### IntelliJ ###
-*.iml
-*.ipr
-*.iws
-.idea/
-
-### Eclipse ###
+.*
+/target/
+.bin
 .classpath
 .project
 .settings/
-
-### Maven ###
-target/
-log/
-
-### Java ###
+/log/
 *.class
 # Package Files #
 *.jar
 *.war
 *.ear
-
-### Linux ###
-.*
-!.gitignore
-!.git*
-!.travis.yml
