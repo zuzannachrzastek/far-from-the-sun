@@ -1,6 +1,6 @@
 package pl.edu.agh.farfromthesun.algorithm;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -9,6 +9,7 @@ import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
 import pl.edu.agh.farfromthesun.algorithm.model.Population;
 import pl.edu.agh.farfromthesun.algorithm.model.TourManager;
 import pl.edu.agh.farfromthesun.app.Component;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 import pl.edu.agh.farfromthesun.map.Location;
 
 public class Algorithm implements Component {
@@ -18,16 +19,16 @@ public class Algorithm implements Component {
 
 	@Override
 	public void initialize(JFrame frame) {
-		new AlgorithmModel(frame, this);
+		new AlgorithmController(frame, this);
 	}
 
 	public Parameters getParametersInstance() {
 		return params;
 	}
 
-	public List<Location> findOptimalTour(List<Location> points) {
+	public ArrayList<WeatherLocation> findOptimalTour(ArrayList<Location> points) {
 		if (points.size() < 3) {
-			return points;
+			return null;//points;
 		}
 
 		TourManager.initialize(points);
@@ -40,7 +41,7 @@ public class Algorithm implements Component {
 		}
 
 		System.out.print(pop.getFittest());
-		return pop.getFittest().getPoints();
+		return null;//pop.getFittest().getPoints();
 	}
 
 }

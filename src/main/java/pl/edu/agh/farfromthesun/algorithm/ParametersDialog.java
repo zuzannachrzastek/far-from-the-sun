@@ -2,7 +2,6 @@ package pl.edu.agh.farfromthesun.algorithm;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Map.Entry;
 
@@ -32,7 +31,8 @@ class ParametersDialog extends JPanel {
 		return values;
 	}
 
-	public void addPanels(List<ParametersPanel> panels) {
+	public void addPanels(LinkedList<ParametersPanel> panels) {
+		this.panels = panels;
 		ListIterator<ParametersPanel> it = panels.listIterator();
 
 		while (it.hasNext()) {
