@@ -136,7 +136,7 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 	@Override
 	public void handleResults(ArrayList<WeatherLocation> locations) {
 		LocationConverter placeConverter = new LocationConverter();
-		placeConverter.setPlaces(places);
+		placeConverter.setPlaces(locations);
 		coordinates = placeConverter.getCoordinates();
 		drawRoute();
 	}
