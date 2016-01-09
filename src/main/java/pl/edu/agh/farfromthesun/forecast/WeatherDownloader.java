@@ -18,8 +18,8 @@ public class WeatherDownloader implements IWeatherDownloader{
             return;
         }
         System.out.println(fd.getDate().toString());
-        System.out.println(String.valueOf(fd.getLatitude()));
-        System.out.println(String.valueOf(fd.getLongitude()));
+        System.out.println(String.valueOf(fd.getLat()));
+        System.out.println(String.valueOf(fd.getLon()));
         System.out.println(fd.getIconUrl());
         System.out.println(String.valueOf(fd.getHighTemp()));
         System.out.println(String.valueOf(fd.getLowTemp()));

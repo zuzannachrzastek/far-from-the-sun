@@ -19,7 +19,7 @@ public class WeatherLocation extends Location {
 	}
 
 	public WeatherLocation(Location point) {
-		super(point.getLatitude(), point.getLongitude());
+		super(point.getLat(), point.getLon());
 	}
 
 	public LocalDate getDate() {
