@@ -21,7 +21,7 @@ public class ParametersDatepicker extends JDatePickerImpl implements
 		DateModel<?> model = this.getModel();
 		
 		if(model.getValue() != null){
-			date = LocalDate.of(model.getYear(), model.getMonth(), model.getDay());
+			date = LocalDate.of(model.getYear(), model.getMonth()+1, model.getDay());
 		} else {
 			date = LocalDate.now();
 		}
