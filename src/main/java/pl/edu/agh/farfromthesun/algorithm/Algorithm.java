@@ -9,7 +9,7 @@ import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
 import pl.edu.agh.farfromthesun.algorithm.model.Population;
 import pl.edu.agh.farfromthesun.algorithm.model.TourManager;
 import pl.edu.agh.farfromthesun.app.Component;
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class Algorithm implements Component {
 	private Population pop;
@@ -25,7 +25,7 @@ public class Algorithm implements Component {
 		return params;
 	}
 
-	public List<Point> findOptimalTour(List<Point> points) {
+	public List<Location> findOptimalTour(List<Location> points) {
 		if (points.size() < 3) {
 			return points;
 		}

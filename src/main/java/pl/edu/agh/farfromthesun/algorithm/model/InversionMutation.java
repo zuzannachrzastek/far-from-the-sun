@@ -3,7 +3,7 @@ package pl.edu.agh.farfromthesun.algorithm.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class InversionMutation implements Mutation, Nameable{
 
@@ -19,7 +19,7 @@ public class InversionMutation implements Mutation, Nameable{
 			to = from - to;
 			from -= to;
 		}
-		List<Point> reversedValues = new ArrayList<Point>();
+		List<Location> reversedValues = new ArrayList<Location>();
 		for (int i = to; i >= from; i--) {
 			reversedValues.add(tour.getPointAt(i));
 		}

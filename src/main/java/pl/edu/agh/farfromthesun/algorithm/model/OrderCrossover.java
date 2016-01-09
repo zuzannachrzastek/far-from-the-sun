@@ -3,7 +3,7 @@ package pl.edu.agh.farfromthesun.algorithm.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class OrderCrossover implements Crossover, Nameable{
 
@@ -11,7 +11,7 @@ public class OrderCrossover implements Crossover, Nameable{
 	public Tour cross(Tour a, Tour b) {
 		int from = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
 		int to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		Set<Point> assignedPoints = new HashSet<Point>();
+		Set<Location> assignedPoints = new HashSet<Location>();
 		Tour child = new Tour();
 		
 		while (to == from) {

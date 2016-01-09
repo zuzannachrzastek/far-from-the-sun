@@ -3,7 +3,7 @@ package pl.edu.agh.farfromthesun.algorithm.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class PMX implements Crossover, Nameable {
 
@@ -12,8 +12,8 @@ public class PMX implements Crossover, Nameable {
 		int from = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
 		int to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
 		Tour child = new Tour();
-		Map<Point, Integer> parentA = new HashMap<Point, Integer>();
-		Map<Point, Integer> parentB = new HashMap<Point, Integer>();
+		Map<Location, Integer> parentA = new HashMap<Location, Integer>();
+		Map<Location, Integer> parentB = new HashMap<Location, Integer>();
 		for (int i = 1; i < a.tourSize(); i++) {
 			parentA.put(a.getPointAt(i), i);
 			parentB.put(b.getPointAt(i), i);

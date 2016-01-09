@@ -1,16 +1,17 @@
 package pl.edu.agh.farfromthesun.map;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import pl.edu.agh.farfromthesun.algorithm.AlgorithmObserver;
 import pl.edu.agh.farfromthesun.app.Component;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 public class Map implements AlgorithmObserver, Component {
 
 	@Override
-	public void handleResults(List<Point> locations) {
+	public void handleResults(ArrayList<WeatherLocation> locations) {
 		// TODO Auto-generated method stub
 
 	}

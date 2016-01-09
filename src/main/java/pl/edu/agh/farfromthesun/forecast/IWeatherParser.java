@@ -1,9 +1,9 @@
 package pl.edu.agh.farfromthesun.forecast;
 
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 import java.time.LocalDate;
 
 public interface IWeatherParser {
-    ForecastData GetForecastDataForSpecificDateAndPoint(LocalDate date, Point point);
+    WeatherLocation GetForecastDataForSpecificDateAndPoint(LocalDate date, Location point);
 }

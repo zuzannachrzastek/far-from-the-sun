@@ -5,14 +5,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class EdgeCrossover implements Crossover, Nameable {
 
 	@Override
 	public Tour cross(Tour a, Tour b) {
 		Map<Integer, HashMap<Integer, Integer>> points = new HashMap<Integer, HashMap<Integer, Integer>>();
-		Map<Point, Integer> point2int = new HashMap<Point, Integer>();
+		Map<Location, Integer> point2int = new HashMap<Location, Integer>();
 		Set<Integer> added = new HashSet<Integer>();
 		for (int i = 0; i < a.tourSize(); i++) {
 			points.put(i, new HashMap<Integer, Integer>());

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import pl.edu.agh.farfromthesun.algorithm.model.Crossover;
 import pl.edu.agh.farfromthesun.algorithm.model.Mutation;
 import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class AlgorithmModel extends JPanel {
 	private static final long serialVersionUID = 8491592003308755995L;
@@ -40,16 +40,16 @@ public class AlgorithmModel extends JPanel {
 
 		// values created to test
 
-		List<Point> list = new LinkedList<Point>();
-		list.add(new Point(60, 200));
-		list.add(new Point(180, 200));
-		list.add(new Point(80, 180));
-		list.add(new Point(140, 180));
-		list.add(new Point(20, 160));
-		list.add(new Point(100, 160));
-		list.add(new Point(200, 160));
-		list.add(new Point(140, 140));
-		list.add(new Point(40, 120));
+		List<Location> list = new LinkedList<Location>();
+		list.add(new Location(60, 200));
+		list.add(new Location(180, 200));
+		list.add(new Location(80, 180));
+		list.add(new Location(140, 180));
+		list.add(new Location(20, 160));
+		list.add(new Location(100, 160));
+		list.add(new Location(200, 160));
+		list.add(new Location(140, 140));
+		list.add(new Location(40, 120));
 
 		btnStart.addActionListener(e -> {
 			JOptionPane.showMessageDialog(frame, "Starting algorithm");

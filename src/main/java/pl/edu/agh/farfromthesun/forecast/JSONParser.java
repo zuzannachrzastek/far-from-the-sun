@@ -2,7 +2,7 @@ package pl.edu.agh.farfromthesun.forecast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ public class JSONParser implements IWeatherParser{
 
     private static final int errorWeatherStringLength = 300;
 
-    public ForecastData GetForecastDataForSpecificDateAndPoint(LocalDate date, Point point){
+    public WeatherLocation GetForecastDataForSpecificDateAndPoint(LocalDate date, Location point){
         URLConnectionReader urlConnReader = new URLConnectionReader();
         try {
             String forecastDataString = urlConnReader.GetForecastData(GetStringCooridnates(point));
@@ -40,14 +40,13 @@ public class JSONParser implements IWeatherParser{
         return GetEmptyForecastDataObject(date, point);
     }
 
-    private String GetStringCooridnates(Point point){
+    private String GetStringCooridnates(Location point){
         return String.valueOf(point.getLatitude()) + "," + String.valueOf(point.getLongitude());
     }
 
-    private ForecastData GetForecastData(JSONObject data, LocalDate date, Point point){
-        ForecastData forecastDataObject = new ForecastData();
+    private WeatherLocation GetForecastData(JSONObject data, LocalDate date, Location point){
+        WeatherLocation forecastDataObject = new WeatherLocation(point);
         forecastDataObject.setDate(date);
-        forecastDataObject.setCoordinates(point);
         forecastDataObject.setIconUrl(data.getString("icon_url"));
         final JSONObject highTemp = data.getJSONObject("high");
         forecastDataObject.setHighTemp(highTemp.getInt("celsius"));
@@ -82,10 +81,9 @@ public class JSONParser implements IWeatherParser{
         forecastDataObject.setAveHumidity(data.getInt("avehumidity"));
         return forecastDataObject;
     }
-    private ForecastData GetEmptyForecastDataObject(LocalDate date, Point point){
-        ForecastData fd = new ForecastData();
+    private WeatherLocation GetEmptyForecastDataObject(LocalDate date, Location point){
+        WeatherLocation fd = new WeatherLocation(point);
         fd.setDate(date);
-        fd.setCoordinates(point);
         return fd;
     }
 }

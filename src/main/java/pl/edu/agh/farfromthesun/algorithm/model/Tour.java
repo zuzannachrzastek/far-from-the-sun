@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pl.edu.agh.farfromthesun.map.Point;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class Tour {
-	private ArrayList<Point> tour = new ArrayList<Point>();
+	private ArrayList<Location> tour = new ArrayList<Location>();
 	private double distance = 0;
 	private double fitness = 0;
 
-	public Tour(List<Point> points) {
-		for (Point i : points) {
+	public Tour(List<Location> points) {
+		for (Location i : points) {
 			tour.add(i);
 		}
 	}
@@ -26,7 +26,7 @@ public class Tour {
 												// first
 	}
 
-	public void setPoint(int position, Point point) {
+	public void setPoint(int position, Location point) {
 		tour.set(position, point);
 		distance = 0;
 		fitness = 0;
@@ -65,19 +65,19 @@ public class Tour {
 		return tour.size();
 	}
 
-	public Point getFirstPoint() {
+	public Location getFirstPoint() {
 		return getPointAt(0);
 	}
 
-	public Point getLastPoint() {
+	public Location getLastPoint() {
 		return getPointAt(tour.size() - 1);
 	}
 
-	public Point getPointAt(int i) {
+	public Location getPointAt(int i) {
 		return tour.get(i);
 	}
 
-	public List<Point> getPoints() {
+	public List<Location> getPoints() {
 		return tour;
 	}
 }

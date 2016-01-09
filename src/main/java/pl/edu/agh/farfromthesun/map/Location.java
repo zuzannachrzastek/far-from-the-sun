@@ -1,10 +1,10 @@
 package pl.edu.agh.farfromthesun.map;
 
-public class Point implements Comparable<Point>{
+public class Location implements Comparable<Location>{
 	private double latitude; // szerokosc
 	private double longitude; // dlugosc
 
-	public Point(double latitude, double longitude) {
+	public Location(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
@@ -17,7 +17,7 @@ public class Point implements Comparable<Point>{
 		return longitude;
 	}
 
-	public double distanceTo(Point target) {
+	public double distanceTo(Location target) {
 		return Math.sqrt((this.latitude - target.getLatitude()) * (this.latitude - target.getLatitude())
 				+ (this.longitude - target.getLongitude()) * (this.longitude - target.getLongitude()));
 	}
@@ -28,7 +28,7 @@ public class Point implements Comparable<Point>{
 	}
 
 	@Override
-	public int compareTo(Point p) {
+	public int compareTo(Location p) {
 		if(this.getLatitude() == p.getLatitude() && this.getLongitude() == p.getLongitude()){
 			return 0;
 		}
