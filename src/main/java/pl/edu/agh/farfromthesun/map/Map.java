@@ -81,9 +81,9 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 	CHWILOWY listener, usunac razem z btnStart jesli bedzie gotowy ostateczny przycisk Start
 
 	 */
-		private void startListener() {
+		public void startListener() {
 		listenerFlag = false;
-		//drawRoute();
+		drawRoute();
 	}
 
 	private void drawRoute() {
@@ -96,13 +96,13 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 			one = coordinates.get(i);
 			two = coordinates.get(i+1);
 			route = new ArrayList<Coordinate>(Arrays.asList(one, two, two));
-			treeMap.addMapPolygon(new MapPolygonImpl(route));
+			treeMap.addMapPolygon(new MyMapMarkerArrow(route));
 		}
 
 		one = coordinates.get(0);
 		two = coordinates.get(coordinates.size()-1);
-		route = new ArrayList<Coordinate>(Arrays.asList(one, two, two));
-		treeMap.addMapPolygon(new MapPolygonImpl(route));
+		route = new ArrayList<Coordinate>(Arrays.asList(two, one, one));
+		treeMap.addMapPolygon(new MyMapMarkerArrow(route));
 
 	}
 
