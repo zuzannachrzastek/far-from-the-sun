@@ -1,26 +1,22 @@
 package pl.edu.agh.farfromthesun.map;
 
-import com.sun.xml.internal.bind.v2.TODO;
+
+import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
-import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
+import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
+import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
 import pl.edu.agh.farfromthesun.algorithm.AlgorithmObserver;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.*;
-
-
-import org.openstreetmap.gui.jmapviewer.Coordinate;
-import org.openstreetmap.gui.jmapviewer.JMapViewer;
-import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
-import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
-import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 
 public class Map extends Component implements AlgorithmObserver, JMapViewerEventListener {
