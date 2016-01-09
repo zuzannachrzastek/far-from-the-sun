@@ -7,18 +7,20 @@ import java.util.ArrayList;
 
 public final class ForecastCache {
 
-    private static ArrayList<WeatherLocation> cacheList = new ArrayList<>();
+    public static ArrayList<WeatherLocation> cacheList = new ArrayList<>();
 
     public static void AddToCache(WeatherLocation weatherLocation){
-        if(cacheList.contains(weatherLocation)) return;
+        for( WeatherLocation wl : cacheList){
+            if(wl.getDate().equals(weatherLocation.getDate()) && wl.getLon() == weatherLocation.getLon() && wl.getLat() == weatherLocation.getLat())
+                return;
+        }
         cacheList.add(weatherLocation);
     }
 
     public static WeatherLocation GetCachedForecastData(LocalDate date, Location location){
         for( WeatherLocation wl : cacheList){
-            if(wl.getDate() == date && wl.getLon() == location.getLon() && wl.getLat() == location.getLat()){
+            if(wl.getDate().equals(date) && wl.getLon() == location.getLon() && wl.getLat() == location.getLat())
                 return wl;
-            }
         }
         IWeatherParser parser = new JSONParser();
         return parser.GetForecast(date, location);
