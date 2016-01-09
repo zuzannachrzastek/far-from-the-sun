@@ -8,6 +8,8 @@ import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
 import pl.edu.agh.farfromthesun.algorithm.AlgorithmObserver;
+import pl.edu.agh.farfromthesun.app.*;
+import pl.edu.agh.farfromthesun.app.Component;
 import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 import javax.swing.*;
@@ -19,12 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class Map extends Component implements AlgorithmObserver, JMapViewerEventListener {
+public class Map implements AlgorithmObserver, JMapViewerEventListener, Component {
 
 	private ArrayList<Coordinate> coordinates = new ArrayList<>();
 	private ArrayList<Location> places = new ArrayList<>();
 	private JMapViewer treeMap;
-	boolean listenerFlag = true;
+	private boolean listenerFlag = true;
 
 	@Override
 	public void initialize(JFrame frame) {
@@ -32,7 +34,6 @@ public class Map extends Component implements AlgorithmObserver, JMapViewerEvent
 		treeMap = new JMapViewer();
 		treeMap.setPreferredSize(new Dimension(700,600));
 		treeMap.addMouseListener(new MouseAdapter() {
-			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (listenerFlag) {
 					Point p = e.getPoint();
@@ -56,10 +57,6 @@ public class Map extends Component implements AlgorithmObserver, JMapViewerEvent
 	}
 
 
-	@Override
-	public void processCommand(JMVCommandEvent jmvCommandEvent) {
-
-	}
 
 	//listener methods
 
@@ -112,5 +109,10 @@ public class Map extends Component implements AlgorithmObserver, JMapViewerEvent
 		placeConverter.setPlaces(places);
 		coordinates = placeConverter.getCoordinates();
 		drawRoute();
+	}
+
+	@Override
+	public void processCommand(JMVCommandEvent command) {
+
 	}
 }
