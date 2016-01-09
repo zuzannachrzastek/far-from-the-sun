@@ -3,9 +3,7 @@ package pl.edu.agh.farfromthesun.algorithm;
 import java.awt.BorderLayout;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -59,13 +57,13 @@ public class AlgorithmController extends JPanel {
 							"Edit parameters", JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.PLAIN_MESSAGE);
 					if (result == JOptionPane.OK_OPTION) {
-						HashMap<String, Object> params = dialog
+						/*HashMap<String, Object> params = dialog
 								.getInputValues();
 
 						for (Entry<String, Object> entry : params.entrySet()) {
 							System.out.println(entry.getKey() + ": "
 									+ entry.getValue());
-						}
+						}*/
 
 						updateModel(dialog);
 

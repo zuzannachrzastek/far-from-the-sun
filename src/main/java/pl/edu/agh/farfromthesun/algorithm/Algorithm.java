@@ -1,5 +1,6 @@
 package pl.edu.agh.farfromthesun.algorithm;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -8,9 +9,9 @@ import pl.edu.agh.farfromthesun.algorithm.model.GeneticAlgorithm;
 import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
 import pl.edu.agh.farfromthesun.algorithm.model.Population;
 import pl.edu.agh.farfromthesun.algorithm.model.TourManager;
+import pl.edu.agh.farfromthesun.app.App;
 import pl.edu.agh.farfromthesun.app.Component;
 import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
-import pl.edu.agh.farfromthesun.map.Location;
 
 public class Algorithm implements Component {
 	private Population pop;
@@ -22,11 +23,13 @@ public class Algorithm implements Component {
 		new AlgorithmController(frame, this);
 	}
 
-	public ArrayList<WeatherLocation> findOptimalTour(ArrayList<Location> points) {
+	public ArrayList<WeatherLocation> findOptimalTour(
+			ArrayList<WeatherLocation> points) {
 		if (points.size() < 3) {
 			ArrayList<WeatherLocation> result = new ArrayList<WeatherLocation>();
-			for (Location location : points) {
-				result.add(new WeatherLocation(location));
+			LocalDate date = params.getDate();
+			for (int i = 0; i < points.size(); i++) {
+				result.add(App.getForecast().getForecast(date, points.get(i)));
 			}
 			return result;
 		}

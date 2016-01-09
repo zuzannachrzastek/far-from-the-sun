@@ -3,11 +3,9 @@ package pl.edu.agh.farfromthesun.algorithm.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import pl.edu.agh.farfromthesun.app.App;
 import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
-import pl.edu.agh.farfromthesun.map.Location;
 
 public class Tour {
 	private ArrayList<WeatherLocation> tour = new ArrayList<WeatherLocation>();
@@ -15,25 +13,20 @@ public class Tour {
 	private double fitness = 0;
 	private double temperature = Double.MAX_VALUE;
 
-	public Tour(List<Location> points) {
-		for (Location i : points) {
-			tour.add(new WeatherLocation(i));
-		}
-	}
-
 	public Tour() {
 		for (int i = 1; i < TourManager.numberOfPoints(); i++) {
 			tour.add(new WeatherLocation(TourManager.getPoint(i)));
 		}
 		Collections.shuffle(tour);
-		tour.add(0, new WeatherLocation(TourManager.getPoint(0))); // setting starting point to be
-												// first
+		tour.add(tour.get(0));
+		tour.set(0, new WeatherLocation(TourManager.getPoint(0)));
 	}
 
 	public void setPoint(int position, WeatherLocation point) {
 		tour.set(position, point);
 		distance = 0;
 		fitness = 0;
+		temperature = Double.MAX_VALUE;
 	}
 
 	public double getDistance() {
@@ -61,7 +54,7 @@ public class Tour {
 						getPointAt(i));
 
 				if (loc != null){
-					setPoint(i, loc);
+					tour.set(i, loc);
 					temperature += loc.getHighTemp();
 				}
 			}

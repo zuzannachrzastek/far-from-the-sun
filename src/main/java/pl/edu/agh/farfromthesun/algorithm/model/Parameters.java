@@ -46,6 +46,7 @@ public class Parameters {
 		this.mutations.add(new InversionMutation());
 		this.mutation = mutations.get(0);
 		this.temperature = temperature;
+		this.date = LocalDate.now();
 	}
 
 	private Parameters() {

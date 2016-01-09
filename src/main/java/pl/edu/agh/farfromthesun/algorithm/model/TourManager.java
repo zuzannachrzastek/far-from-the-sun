@@ -1,25 +1,21 @@
 package pl.edu.agh.farfromthesun.algorithm.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import pl.edu.agh.farfromthesun.map.Location;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 public class TourManager {
-    private static ArrayList<Location> points = new ArrayList<Location>();
-    
-	public static void initialize(List<Location> points) {
-		TourManager.points = new ArrayList<Location>();
-		for (Location i : points) {
-			TourManager.points.add(i);
-		}
-	}
-    
-    public static Location getPoint(int i){
-        return (Location)points.get(i);
-    }
+	private static ArrayList<WeatherLocation> points = new ArrayList<WeatherLocation>();
 
-    public static int numberOfPoints(){
-        return points.size();
-    }
+	public static void initialize(ArrayList<WeatherLocation> points) {
+		TourManager.points = new ArrayList<WeatherLocation>(points);
+	}
+
+	public static WeatherLocation getPoint(int i) {
+		return points.get(i);
+	}
+
+	public static int numberOfPoints() {
+		return points.size();
+	}
 }
