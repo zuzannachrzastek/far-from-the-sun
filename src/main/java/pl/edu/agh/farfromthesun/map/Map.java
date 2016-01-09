@@ -49,12 +49,9 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 			}});
 
 		JButton btnDelete = new JButton("Delete");
-		JButton btnStart = new JButton("Start");
 		JPanel container = new JPanel();
 		btnDelete.addActionListener(e -> deleteLast());
-		btnStart.addActionListener(e -> startListener());
 		container.add(btnDelete);
-		container.add(btnStart);
 		frame.getContentPane().add(treeMap, BorderLayout.EAST);
 		frame.getContentPane().add(container, BorderLayout.NORTH);
 
