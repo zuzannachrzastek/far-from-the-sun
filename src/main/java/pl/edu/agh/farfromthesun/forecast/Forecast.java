@@ -16,13 +16,11 @@ public class Forecast implements AlgorithmObserver, Component {
 	@Override
 	public void handleResults(ArrayList<WeatherLocation> locations) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void initialize(JFrame frame) {
-		// TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
 	}
 	
 	public WeatherLocation getForecast(LocalDate date, Location location){

@@ -36,24 +36,55 @@ public class MyMapMarkerArrow extends MapPolygonImpl {
 
             int pointsSize = points.size() - 1;
 
+            //pierwszy punkt nizej
             if (points.get(0).getY() > points.get(1).getY()) {
-                path.lineTo(points.get(pointsSize).getX(),
-                        points.get(pointsSize).getY() + 20);
 
-                path.moveTo(points.get(pointsSize).getX(),
-                        points.get(pointsSize).getY());
+                // i po lewej
+                if (points.get(0).getX() > points.get(1).getX()) {
+                    path.lineTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY() + 20);
 
-                path.lineTo(points.get(pointsSize).getX() - 20,
-                        points.get(pointsSize).getY());
+                    path.moveTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY());
+
+                    path.lineTo(points.get(pointsSize).getX() + 20,
+                            points.get(pointsSize).getY());
+                }
+                // i po prawej
+                else {
+                    path.lineTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY() + 20);
+
+                    path.moveTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY());
+
+                    path.lineTo(points.get(pointsSize).getX() - 20,
+                            points.get(pointsSize).getY());
+                }
+            //pierwszy punkt wyzej
             } else {
-                path.lineTo(points.get(pointsSize).getX(),
-                        points.get(pointsSize).getY() - 20);
+                // i po lewej
+                if (points.get(0).getX() > points.get(1).getX()) {
+                    path.lineTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY() - 20);
 
-                path.moveTo(points.get(pointsSize).getX(),
-                        points.get(pointsSize).getY());
+                    path.moveTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY());
 
-                path.lineTo(points.get(pointsSize).getX() + 20,
-                        points.get(pointsSize).getY());
+                    path.lineTo(points.get(pointsSize).getX() + 20,
+                            points.get(pointsSize).getY());
+                }
+                else {
+                    path.lineTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY() - 20);
+
+                    path.moveTo(points.get(pointsSize).getX(),
+                            points.get(pointsSize).getY());
+
+                    path.lineTo(points.get(pointsSize).getX() - 20,
+                            points.get(pointsSize).getY());
+                }
+
             }
         }
         return path;

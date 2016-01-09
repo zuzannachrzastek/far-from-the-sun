@@ -102,11 +102,11 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 			route = new ArrayList<Coordinate>(Arrays.asList(one, two, two));
 			treeMap.addMapPolygon(new MyMapMarkerArrow(route));
 		}
-
+/*
 		one = coordinates.get(0);
 		two = coordinates.get(coordinates.size()-1);
 		route = new ArrayList<Coordinate>(Arrays.asList(two, one, one));
-		treeMap.addMapPolygon(new MyMapMarkerArrow(route));
+		treeMap.addMapPolygon(new MyMapMarkerArrow(route));*/
 
 	}
 

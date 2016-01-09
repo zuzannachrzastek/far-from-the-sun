@@ -7,8 +7,7 @@ import java.time.LocalDate;
 public class WeatherDownloader implements IWeatherDownloader{
 
     public WeatherLocation GetForecast(LocalDate date, Location location){
-        IWeatherParser parser = new JSONParser();
-        return parser.GetForecast(date, location);
+        return ForecastCache.GetCachedForecastData(date, location);
     }
 
     public void writeData(){
