@@ -1,12 +1,8 @@
 package pl.edu.agh.farfromthesun.algorithm.model;
 
 public class GeneticAlgorithm {
-	private double mutationRate;
-	private int tournamentSize;
-	private Crossover crossover;
-	private Mutation mutation;
+	private final Parameters params = Parameters.getInstance();
 	private boolean found = false;
-	private int minimumFitness;
 
 	public Population evolvePopulation(Population pop) {
 		Population newPopulation = new Population(pop.populationSize(), false);
@@ -17,7 +13,7 @@ public class GeneticAlgorithm {
 			if (found) {
 				return pop;
 			}
-			Tour child = crossover.cross(parent1, parent2);
+			Tour child = params.getCross().cross(parent1, parent2);
 			newPopulation.setTour(i, child);
 		}
 
@@ -29,22 +25,22 @@ public class GeneticAlgorithm {
 	}
 
 	private void mutate(Tour tour) {
-		if (Math.random() < mutationRate) {
-			mutation.mutate(tour);
+		if (Math.random() < params.getMutationRate()) {
+			params.getMutation().mutate(tour);
 		}
 	}
 
 	private Tour tournamentSelection(Population pop) {
-		Population tournament = new Population(tournamentSize, false);
+		Population tournament = new Population(params.getTournamentSize(), false);
 		
 		Tour fittest = pop.getFittest();
 		
-		if (fittest.getFitness() > minimumFitness) {
+		if (fittest.getFitness() > params.getMinimumFitness()) {
 			found = true;
 			return fittest;
 		}
 		
-		for (int i = 0; i < tournamentSize; i++) {
+		for (int i = 0; i < params.getTournamentSize(); i++) {
 			int randomId = (int) (Math.random() * pop.populationSize());
 			tournament.setTour(i, pop.getTour(randomId));
 		}

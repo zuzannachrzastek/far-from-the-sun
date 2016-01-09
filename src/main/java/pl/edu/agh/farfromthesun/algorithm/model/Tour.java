@@ -77,9 +77,9 @@ public class Tour {
 
 	@Override
 	public String toString() {
-		String result = "|";
-		for (int i = 0; i < tour.size(); i++) {
-			result += tour.get(i) + "|";
+		String result = tour.get(0).toString();
+		for (int i = 1; i < tour.size(); i++) {
+			result += "\n\n  |\n  V\n\n" + tour.get(i);
 		}
 		return result;
 	}

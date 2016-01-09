@@ -7,8 +7,7 @@ public class Population {
 		tours = new Tour[size];
 		if(first){
 			for(int i = 0; i < size; i++){
-				Tour newTour = new Tour();
-				setTour(i, newTour);
+				setTour(i, new Tour());
 			}
 		}
 	}
