@@ -85,4 +85,9 @@ public class WeatherLocation extends Location {
 	public void setAveHumidity(int aveHumidity) {
 		this.aveHumidity = aveHumidity;
 	}
+	
+	@Override
+	public String toString() {
+		return "Date: " + getDate().toString() + "\nPosition: " + String.valueOf(getLat()) + ", " + String.valueOf(getLon()) + "\n" + "Temperature: " + String.valueOf(getHighTemp());
+	}
 }

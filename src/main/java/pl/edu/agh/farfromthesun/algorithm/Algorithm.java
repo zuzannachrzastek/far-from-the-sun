@@ -14,7 +14,7 @@ import pl.edu.agh.farfromthesun.map.Location;
 
 public class Algorithm implements Component {
 	private Population pop;
-	private final Parameters params = new Parameters();
+	private final Parameters params = Parameters.getInstance();
 	private final GeneticAlgorithm algo = new GeneticAlgorithm();
 
 	@Override
@@ -22,17 +22,17 @@ public class Algorithm implements Component {
 		new AlgorithmController(frame, this);
 	}
 
-	public Parameters getParametersInstance() {
-		return params;
-	}
-
 	public ArrayList<WeatherLocation> findOptimalTour(ArrayList<Location> points) {
 		if (points.size() < 3) {
-			return null;//points;
+			ArrayList<WeatherLocation> result = new ArrayList<WeatherLocation>();
+			for (Location location : points) {
+				result.add(new WeatherLocation(location));
+			}
+			return result;
 		}
 
 		TourManager.initialize(points);
-		
+
 		pop = algo.evolvePopulation(new Population(params.getPopulationSize(),
 				true));
 
@@ -41,7 +41,7 @@ public class Algorithm implements Component {
 		}
 
 		System.out.print(pop.getFittest());
-		return null;//pop.getFittest().getPoints();
+		return pop.getFittest().getPoints();
 	}
 
 }

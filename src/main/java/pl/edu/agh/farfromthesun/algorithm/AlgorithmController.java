@@ -1,6 +1,7 @@
 package pl.edu.agh.farfromthesun.algorithm;
 
 import java.awt.BorderLayout;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,12 +19,11 @@ import pl.edu.agh.farfromthesun.algorithm.model.Mutation;
 import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
 import pl.edu.agh.farfromthesun.app.App;
 import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
-import pl.edu.agh.farfromthesun.map.Location;
 
 public class AlgorithmController extends JPanel {
 	private static final long serialVersionUID = 8491592003308755995L;
 	private JButton btnStart, btnConfig;
-	private Parameters parameters;
+	private final Parameters parameters = Parameters.getInstance();
 	private ParametersSpinner population;
 	private ParametersSpinner generations;
 	private ParametersSpinner fitness;
@@ -35,7 +35,6 @@ public class AlgorithmController extends JPanel {
 	private ParametersSpinner temperature;
 
 	public AlgorithmController(JFrame frame, Algorithm ctrl) {
-		this.parameters = ctrl.getParametersInstance();
 		JPanel container = new JPanel();
 
 		this.setLayout(new BorderLayout());
@@ -43,23 +42,9 @@ public class AlgorithmController extends JPanel {
 		btnStart = new JButton("Start");
 		btnConfig = new JButton("Config");
 
-		// values created to test
-
-		ArrayList<Location> list = new ArrayList<Location>();
-		list.add(new Location(60, 200));
-		list.add(new Location(180, 200));
-		list.add(new Location(80, 180));
-		list.add(new Location(140, 180));
-		list.add(new Location(20, 160));
-		list.add(new Location(100, 160));
-		list.add(new Location(200, 160));
-		list.add(new Location(140, 140));
-		list.add(new Location(40, 120));
-
 		btnStart.addActionListener(e -> {
 			JOptionPane.showMessageDialog(frame, "Starting algorithm");
-			// TODO get list from map
-			ArrayList<WeatherLocation> locations = ctrl.findOptimalTour(list);
+			ArrayList<WeatherLocation> locations = ctrl.findOptimalTour(App.getMap().sendPlaces());
 			App.getMap().handleResults(locations);
 			App.getForecast().handleResults(locations);
 		});
@@ -140,5 +125,7 @@ public class AlgorithmController extends JPanel {
 		parameters.setTournamentSize(((Double) tournament.getInputValue()).intValue());
 		parameters.setMutation((Mutation) mutations.getInputValue());
 		parameters.setCross((Crossover) crossovers.getInputValue());
+		parameters.setDate((LocalDate) date.getInputValue());
+		parameters.setTemperature((Double) temperature.getInputValue());
 	}
 }

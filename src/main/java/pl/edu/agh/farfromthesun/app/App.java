@@ -1,12 +1,12 @@
 package pl.edu.agh.farfromthesun.app;
 
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+
 import pl.edu.agh.farfromthesun.algorithm.Algorithm;
 import pl.edu.agh.farfromthesun.forecast.Forecast;
-import pl.edu.agh.farfromthesun.forecast.WeatherDownloader;
 import pl.edu.agh.farfromthesun.map.Map;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class App extends JFrame {
 
@@ -40,8 +40,6 @@ public class App extends JFrame {
 		App.setAlgorithm(algorithm);
 
 		app.revalidate();
-		WeatherDownloader wd = new WeatherDownloader();
-		wd.writeData();
 	}
 
 	public static Map getMap() {

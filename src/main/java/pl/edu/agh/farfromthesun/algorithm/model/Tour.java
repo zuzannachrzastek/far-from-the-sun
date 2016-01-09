@@ -1,32 +1,36 @@
 package pl.edu.agh.farfromthesun.algorithm.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import pl.edu.agh.farfromthesun.app.App;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 import pl.edu.agh.farfromthesun.map.Location;
 
 public class Tour {
-	private ArrayList<Location> tour = new ArrayList<Location>();
+	private ArrayList<WeatherLocation> tour = new ArrayList<WeatherLocation>();
 	private double distance = 0;
 	private double fitness = 0;
+	private double temperature = Double.MAX_VALUE;
 
 	public Tour(List<Location> points) {
 		for (Location i : points) {
-			tour.add(i);
+			tour.add(new WeatherLocation(i));
 		}
 	}
 
 	public Tour() {
 		for (int i = 1; i < TourManager.numberOfPoints(); i++) {
-			tour.add(TourManager.getPoint(i));
+			tour.add(new WeatherLocation(TourManager.getPoint(i)));
 		}
 		Collections.shuffle(tour);
-		tour.add(0, TourManager.getPoint(0)); // setting starting point to be
+		tour.add(0, new WeatherLocation(TourManager.getPoint(0))); // setting starting point to be
 												// first
 	}
 
-	public void setPoint(int position, Location point) {
+	public void setPoint(int position, WeatherLocation point) {
 		tour.set(position, point);
 		distance = 0;
 		fitness = 0;
@@ -44,12 +48,38 @@ public class Tour {
 		return distance;
 	}
 
+	public double getAvgTemperature() {
+		if (temperature == Double.MAX_VALUE) {
+			temperature = 0;
+
+			WeatherLocation loc;
+			LocalDate date = Parameters.getInstance().getDate();
+			int c = 0;
+
+			for (int i = 0; i < tour.size(); i++) {
+				loc = App.getForecast().getForecast(date.plusDays(i),
+						getPointAt(i));
+
+				if (loc != null){
+					setPoint(i, loc);
+					temperature += loc.getHighTemp();
+				}
+			}
+
+			temperature /= c;
+		}
+
+		return temperature;
+	}
+
 	// TODO add weather dependency
 	public double getFitness() {
-		if (fitness != 0) {
-			return fitness;
+		if (fitness == 0) {
+			Parameters params = Parameters.getInstance();
+			double temp = params.getTemperature();
+			fitness = (100 / getDistance()) * (1.0-0.05*Math.abs(temp-getAvgTemperature()));
 		}
-		return 1.0 / getDistance();
+		return fitness;
 	}
 
 	@Override
@@ -65,19 +95,19 @@ public class Tour {
 		return tour.size();
 	}
 
-	public Location getFirstPoint() {
+	public WeatherLocation getFirstPoint() {
 		return getPointAt(0);
 	}
 
-	public Location getLastPoint() {
+	public WeatherLocation getLastPoint() {
 		return getPointAt(tour.size() - 1);
 	}
 
-	public Location getPointAt(int i) {
+	public WeatherLocation getPointAt(int i) {
 		return tour.get(i);
 	}
 
-	public List<Location> getPoints() {
+	public ArrayList<WeatherLocation> getPoints() {
 		return tour;
 	}
 }

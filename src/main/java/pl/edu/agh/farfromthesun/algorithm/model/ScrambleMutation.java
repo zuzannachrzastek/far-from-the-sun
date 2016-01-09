@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pl.edu.agh.farfromthesun.map.Location;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 public class ScrambleMutation implements Mutation, Nameable {
 
@@ -12,7 +12,7 @@ public class ScrambleMutation implements Mutation, Nameable {
 	public void mutate(Tour tour) {
 		int k = tour.tourSize() / 7 + 2;
 		List<Integer> affectedPositions = new ArrayList<Integer>();
-		List<Location> values = new ArrayList<Location>();
+		List<WeatherLocation> values = new ArrayList<WeatherLocation>();
 		for (int i = 0; i < k; i++) {
 			int rand = (int) (Math.random() * (tour.tourSize() - 1)) + 1; // first must not be affected
 			while (affectedPositions.contains(rand)) {
