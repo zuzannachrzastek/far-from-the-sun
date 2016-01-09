@@ -28,7 +28,7 @@ import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 public class Map implements AlgorithmObserver, JMapViewerEventListener, Component {
 
 	private ArrayList<Coordinate> coordinates = new ArrayList<>();
-	private ArrayList<Location> places = new ArrayList<>();
+	private ArrayList<WeatherLocation> places = new ArrayList<>();
 	private JMapViewer treeMap;
 	private boolean listenerFlag = true;
 
@@ -120,7 +120,7 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 
 	*/
 
-	public ArrayList<Location> sendPlaces() {
+	public ArrayList<WeatherLocation> sendPlaces() {
 		listenerFlag = false;
 		LocationConverter placeConverter = new LocationConverter();
 		placeConverter.setCoordinates(coordinates);
