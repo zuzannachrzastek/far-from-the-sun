@@ -1,35 +1,27 @@
 package pl.edu.agh.farfromthesun.map;
 
-public class Location implements Comparable<Location>{
-	private double latitude; // szerokosc
-	private double longitude; // dlugosc
+import org.openstreetmap.gui.jmapviewer.Coordinate;
 
-	public Location(double latitude, double longitude) {
-		this.latitude = latitude;
-		this.longitude = longitude;
-	}
-
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
+public class Location extends Coordinate implements Comparable<Location> {
+	public Location(double lat, double lon) {
+		super(lat, lon);
 	}
 
 	public double distanceTo(Location target) {
-		return Math.sqrt((this.latitude - target.getLatitude()) * (this.latitude - target.getLatitude())
-				+ (this.longitude - target.getLongitude()) * (this.longitude - target.getLongitude()));
+		return Math.sqrt((this.getLat() - target.getLat())
+				* (this.getLat() - target.getLat())
+				+ (this.getLon() - target.getLon())
+				* (this.getLon() - target.getLon()));
 	}
 
 	@Override
 	public String toString() {
-		return this.getLatitude() + ", " + this.getLongitude();
+		return this.getLat() + ", " + this.getLon();
 	}
 
 	@Override
 	public int compareTo(Location p) {
-		if(this.getLatitude() == p.getLatitude() && this.getLongitude() == p.getLongitude()){
+		if (this.getLat() == p.getLat() && this.getLon() == p.getLon()) {
 			return 0;
 		}
 		return 1;

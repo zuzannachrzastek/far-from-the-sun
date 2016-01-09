@@ -41,7 +41,7 @@ public class JSONParser implements IWeatherParser{
     }
 
     private String GetStringCooridnates(Location point){
-        return String.valueOf(point.getLatitude()) + "," + String.valueOf(point.getLongitude());
+        return String.valueOf(point.getLat()) + "," + String.valueOf(point.getLon());
     }
 
     private WeatherLocation GetForecastData(JSONObject data, LocalDate date, Location point){

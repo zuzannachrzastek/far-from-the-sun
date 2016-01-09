@@ -12,6 +12,10 @@ public class App extends JFrame {
 
 	private static final long serialVersionUID = 3066593449554111970L;
 
+	private static Map map;
+	private static Forecast forecast;
+	private static Algorithm algorithm;
+	
 	public App() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 600));
@@ -30,9 +34,37 @@ public class App extends JFrame {
 		map.initialize(app);
 		forecast.initialize(app);
 		algorithm.initialize(app);
+		
+		App.setMap(map);
+		App.setForecast(forecast);
+		App.setAlgorithm(algorithm);
 
 		app.revalidate();
 		WeatherDownloader wd = new WeatherDownloader();
 		wd.writeData();
+	}
+
+	public static Map getMap() {
+		return map;
+	}
+
+	public static void setMap(Map map) {
+		App.map = map;
+	}
+
+	public static Forecast getForecast() {
+		return forecast;
+	}
+
+	public static void setForecast(Forecast forecast) {
+		App.forecast = forecast;
+	}
+
+	public static Algorithm getAlgorithm() {
+		return algorithm;
+	}
+
+	public static void setAlgorithm(Algorithm algorithm) {
+		App.algorithm = algorithm;
 	}
 }

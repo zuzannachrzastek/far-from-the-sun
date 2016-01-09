@@ -14,9 +14,10 @@ public class Parameters {
 	private List<Crossover> crossovers;
 	private Mutation mutation;
 	private List<Mutation> mutations;
+	private double temperature;
 
 	
-	public Parameters(int populationSize, int numberOfGenerations, int minimumFitness, double mutationRate, int tournamentSize) {
+	public Parameters(int populationSize, int numberOfGenerations, int minimumFitness, double mutationRate, int tournamentSize, int temperature) {
 		this.setPopulationSize(populationSize);
 		this.setNumberOfGenerations(numberOfGenerations);
 		this.setMinimumFitness(minimumFitness);
@@ -31,11 +32,12 @@ public class Parameters {
 		this.mutations.add(new ScrambleMutation());
 		this.mutations.add(new InversionMutation());
 		this.mutation = mutations.get(0);
+		this.temperature = temperature;
 	}
 
 
 	public Parameters() {
-		this(100,50,70,0.25,5);
+		this(100,50,70,0.25,5, 20);
 	}
 
 
@@ -113,5 +115,13 @@ public class Parameters {
 	
 	public Nameable[] getCrossovers(){
 		return crossovers.toArray(new Nameable[0]);
+	}
+	
+	public double getTemperature(){
+		return temperature;
+	}
+	
+	public void setTemperature(double temperature){
+		this.temperature = temperature;
 	}
 }
