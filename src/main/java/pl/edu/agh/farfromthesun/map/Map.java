@@ -60,6 +60,12 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 
 	//listener methods
 
+
+	/*
+
+	deleteLast to listener do btnDelete, przepiac do btnDelete jest zostanie przeniesiony
+
+	 */
 	public void deleteLast() {
 		if (listenerFlag == false) return;
 		Coordinate c = coordinates.get(coordinates.size()-1);
@@ -70,10 +76,14 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 		}
 	}
 
+	/*
 
-	private void startListener() {
+	CHWILOWY listener, usunac razem z btnStart jesli bedzie gotowy ostateczny przycisk Start
+
+	 */
+		private void startListener() {
 		listenerFlag = false;
-		drawRoute();
+		//drawRoute();
 	}
 
 	private void drawRoute() {
@@ -96,12 +106,31 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 
 	}
 
-	public List<Location> sendPlaces() {
+
+
+	/*
+
+	Tutaj znajduje sie czesc, ktora powinna byc wykonana natcyhmiast po kliknieciu przyisku START
+	Wysyla do podsystemu Algorithm ArrayList<Loocation> places - wybranych przez uzytkownika lokacji
+	Dodatkowo ustawia listenerFlag=false - nie mozna dodawac kolejnych punktow
+
+	*/
+
+	public ArrayList<Location> sendPlaces() {
+		listenerFlag = false;
 		LocationConverter placeConverter = new LocationConverter();
 		placeConverter.setCoordinates(coordinates);
 		places = placeConverter.getPlaces();
 		return places;
 	}
+
+
+	/*
+
+	Tutaj znajduje sie czesc, ktora wykonuje sie po otrzymaniu przez Algorithm
+	Konwersja Location na Coordinate, rysowanie trasy
+
+	 */
 
 	@Override
 	public void handleResults(ArrayList<WeatherLocation> locations) {
