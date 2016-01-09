@@ -1,6 +1,7 @@
 package pl.edu.agh.farfromthesun.map;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 import java.util.ArrayList;
 
@@ -10,22 +11,26 @@ import java.util.ArrayList;
 public class LocationConverter {
 
     private ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
-    private ArrayList<Location> places = new ArrayList<Location>();
+    private ArrayList<WeatherLocation> places = new ArrayList<WeatherLocation>();
 
     public LocationConverter() {}
 
+    /*
     public void setCoordinates(ArrayList<Coordinate> coordinates) {
         this.coordinates = coordinates;
     }
+    */
 
-    public void setPlaces(ArrayList<Location> places) {
+    public void setPlaces(ArrayList<WeatherLocation> places) {
         this.places = places;
     }
 
-    public ArrayList<Location> getPlaces() {
+    /*
+    public ArrayList<WeatherLocation> getPlaces() {
         makePlaces();
         return places;
     }
+    */
 
     public ArrayList<Coordinate> getCoordinates() {
         makeCoordinates();
@@ -37,19 +42,20 @@ public class LocationConverter {
     Jest problem z kolejnoscia, np. ktos chce zrobic dwa razy pod rzad makePlaces
      */
 
-
+    /*
     private void makePlaces() {
         if (coordinates.isEmpty()) return;
         for (Coordinate c : coordinates) {
-            Location p = new Location(c.getLat(), c.getLon());
+            WeatherLocation p = new WeatherLocation(c.getLat(), c.getLon());
             places.add(p);
         }
     }
+    */
 
     private void makeCoordinates() {
         if (places.isEmpty()) return;
         for (Location p : places) {
-            Coordinate c = new Coordinate(p.getLatitude(), p.getLongitude());
+            Coordinate c = new Coordinate(p.getLat(), p.getLon());
             coordinates.add(c);
         }
     }
