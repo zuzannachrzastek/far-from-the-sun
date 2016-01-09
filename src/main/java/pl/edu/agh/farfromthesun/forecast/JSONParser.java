@@ -15,10 +15,10 @@ public class JSONParser implements IWeatherParser{
         URLConnectionReader urlConnReader = new URLConnectionReader();
         try {
             String forecastDataString = urlConnReader.GetForecastData(GetStringCooridnates(point));
-            System.out.print(forecastDataString);
-            if(forecastDataString.length() < errorWeatherStringLength){
-                return null;
+            if(forecastDataString == null || forecastDataString.length() < errorWeatherStringLength) {
+                return GetEmptyForecastDataObject(date, point);
             }
+            //System.out.print(forecastDataString);
             final JSONObject obj = new JSONObject(forecastDataString);
             final JSONObject forecast = obj.getJSONObject("forecast");
             final JSONObject simpleFormat = forecast.getJSONObject("simpleforecast");
@@ -37,7 +37,7 @@ public class JSONParser implements IWeatherParser{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return GetEmptyForecastDataObject(date, point);
     }
 
     private String GetStringCooridnates(Point point){
@@ -81,5 +81,11 @@ public class JSONParser implements IWeatherParser{
         forecastDataObject.setAveWind(windData.getInt("kph"));
         forecastDataObject.setAveHumidity(data.getInt("avehumidity"));
         return forecastDataObject;
+    }
+    private ForecastData GetEmptyForecastDataObject(LocalDate date, Point point){
+        ForecastData fd = new ForecastData();
+        fd.setDate(date);
+        fd.setCoordinates(point);
+        return fd;
     }
 }

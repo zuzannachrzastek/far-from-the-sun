@@ -8,7 +8,7 @@ import java.time.Month;
 public class WeatherDownloader {
     public ForecastData GetForecast(){
         JSONParser parser = new JSONParser();
-        return parser.GetForecastDataForSpecificDateAndPoint(LocalDate.of(2016, Month.JANUARY, 8), new Point(50.060, 19.959));
+        return parser.GetForecastDataForSpecificDateAndPoint(LocalDate.of(2016, Month.JANUARY, 9), new Point(50.060, 19.959));
     }
     public void writeData(){
         ForecastData fd = GetForecast();
