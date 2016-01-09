@@ -1,24 +1,26 @@
 package pl.edu.agh.farfromthesun.algorithm;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.ProgressMonitor;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import pl.edu.agh.farfromthesun.algorithm.Algorithm.Task;
 import pl.edu.agh.farfromthesun.algorithm.model.Crossover;
 import pl.edu.agh.farfromthesun.algorithm.model.Mutation;
 import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
 import pl.edu.agh.farfromthesun.app.App;
-import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
-public class AlgorithmController extends JPanel {
+public class AlgorithmController extends JPanel implements PropertyChangeListener {
 	private static final long serialVersionUID = 8491592003308755995L;
 	private JButton btnStart, btnConfig;
 	private final Parameters parameters = Parameters.getInstance();
@@ -31,6 +33,8 @@ public class AlgorithmController extends JPanel {
 	private ParametersComboBox crossovers;
 	private ParametersDatepicker date;
 	private ParametersSpinner temperature;
+	
+	private ProgressMonitor progressMonitor;
 
 	public AlgorithmController(JFrame frame, Algorithm ctrl) {
 		JPanel container = new JPanel();
@@ -41,10 +45,10 @@ public class AlgorithmController extends JPanel {
 		btnConfig = new JButton("Config");
 
 		btnStart.addActionListener(e -> {
-			JOptionPane.showMessageDialog(frame, "Starting algorithm");
-			ArrayList<WeatherLocation> locations = ctrl.findOptimalTour(App.getMap().sendPlaces());
-			App.getMap().handleResults(locations);
-			App.getForecast().handleResults(locations);
+			progressMonitor = new ProgressMonitor(AlgorithmController.this,
+					"Running algorithm...", "", 0, 100);
+			progressMonitor.setProgress(0);
+			ctrl.findOptimalTour(App.getMap().sendPlaces(), this);
 		});
 
 		btnConfig
@@ -125,5 +129,18 @@ public class AlgorithmController extends JPanel {
 		parameters.setCross((Crossover) crossovers.getInputValue());
 		parameters.setDate((LocalDate) date.getInputValue());
 		parameters.setTemperature((Double) temperature.getInputValue());
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ("progress" == evt.getPropertyName()) {
+			int progress = (Integer) evt.getNewValue();
+			progressMonitor.setProgress(progress);
+			String message = String.format("Completed %d%%.\n", progress);
+			progressMonitor.setNote(message);
+			if (progressMonitor.isCanceled()) {
+				((Task) evt.getSource()).cancel(true);
+			}
+		}
 	}
 }
