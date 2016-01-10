@@ -18,7 +18,7 @@ public class App extends JFrame {
 	
 	public App() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(1000, 600));
 		pack();
 		setLocationRelativeTo(null);
 		setTitle("Far From The Sun");

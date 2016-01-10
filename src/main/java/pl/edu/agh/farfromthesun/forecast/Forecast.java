@@ -24,20 +24,21 @@ public class Forecast implements AlgorithmObserver, Component {
 	private JScrollPane pane2;
 	private JLabel label1;
 	private JLabel label2;
-	private Icon icon;
-	private JLabel labelicon;
-	private StyleContext context;
-	private StyledDocument document;
-	private Style labelStyle;
+	private JPanel jpanel;
+//	private Icon icon;
+//	private JLabel labelicon;
+//	private StyleContext context;
+//	private StyledDocument document;
+//	private Style labelStyle;
 
 	@Override
 	public void handleResults(ArrayList<WeatherLocation> locations) {
 		//nie działa
-		ArrayList<String> citiesList = new ArrayList<>();
-		for(WeatherLocation wl : locations){
-			citiesList.add(wl.toString());
-		}
-		jList = new JList(citiesList.toArray());
+//		ArrayList<String> citiesList = new ArrayList<>();
+//		for(WeatherLocation wl : locations){
+//			citiesList.add(wl.toString());
+//		}
+//		jList = new JList(citiesList.toArray());
 
 		List list = new List();
 		jList.addMouseListener(new MouseAdapter() {
@@ -50,7 +51,6 @@ public class Forecast implements AlgorithmObserver, Component {
 
 	@Override
 	public void initialize(JFrame frame) {
-        // TODO Auto-generated method stub
 
 		label1 = new JLabel("List of Places");
 		label2 = new JLabel("Weather Forecast");
@@ -59,21 +59,28 @@ public class Forecast implements AlgorithmObserver, Component {
 		pane2 = new JScrollPane(text);
 
 		pane1.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-		pane1.setPreferredSize(new Dimension(200,200));
-		pane1.setMinimumSize(new Dimension(200,200));
+		pane1.setPreferredSize(new Dimension(270,200));
+		pane1.setMinimumSize(new Dimension(270,200));
 
 		pane2.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-		pane2.setPreferredSize(new Dimension(100,250));
-		pane2.setMinimumSize(new Dimension(100,250));
+		pane2.setPreferredSize(new Dimension(270,250));
+		pane2.setMinimumSize(new Dimension(270,250));
 
 		//frame.setLayout(new BoxLayout(frame, BoxLayout.PAGE_AXIS));
 		text.setEditable(false);
 
-		frame.add(label1);
-		frame.add(pane1);
-		frame.add(Box.createRigidArea(new Dimension(0,5)));
-		frame.add(label2);
-		frame.add(pane2);
+		jpanel = new JPanel();
+
+		jpanel.setLayout(new BoxLayout(jpanel, BoxLayout.PAGE_AXIS));
+		jpanel.add(Box.createHorizontalGlue());
+		jpanel.add(label1);
+		jpanel.add(pane1);
+		jpanel.add(Box.createRigidArea(new Dimension(10, 0)));
+		jpanel.add(label2);
+		jpanel.add(pane2);
+
+
+		frame.getContentPane().add(jpanel, BorderLayout.WEST);
 	}
 	
 	public WeatherLocation getForecast(LocalDate date, Location location){
