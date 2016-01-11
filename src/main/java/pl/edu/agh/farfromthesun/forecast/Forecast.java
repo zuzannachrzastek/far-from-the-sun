@@ -50,14 +50,15 @@ public class Forecast implements AlgorithmObserver, Component {
 			}
 		}
 
-//		System.out.print(listModel);
-
 		List list = new List();
 		jList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				JList thelist = (JList)e.getSource();
 				text.setText("");
-				list.printWeather(text, locations.get(e.getID()));
-//				list.printWeather(text, locations.get(e.getID()));
+				int index = thelist.locationToIndex(e.getPoint());
+				if(index >= 0){
+					list.printWeather(text, locations.get(index));
+				}
 			}
 		});
 	}
@@ -81,7 +82,6 @@ public class Forecast implements AlgorithmObserver, Component {
 		pane2.setPreferredSize(new Dimension(270,250));
 		pane2.setMinimumSize(new Dimension(270,250));
 
-		//frame.setLayout(new BoxLayout(frame, BoxLayout.PAGE_AXIS));
 		text.setEditable(false);
 
 		jpanel = new JPanel();
@@ -101,10 +101,4 @@ public class Forecast implements AlgorithmObserver, Component {
 	public WeatherLocation getForecast(LocalDate date, Location location){
 		return wd.GetForecast(date, location);
 	}
-
-//	void makeList(){
-//		int counter;
-//
-//		for(counter)
-//	}
 }
