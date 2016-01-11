@@ -13,11 +13,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Forecast implements AlgorithmObserver, Component {
 	
 	private final WeatherDownloader wd = new WeatherDownloader();
-
+	private ArrayList<String> places = new ArrayList<>();
 	private JList jList;
 	private final JTextPane text = new JTextPane();
 	private JScrollPane pane1;
@@ -25,26 +27,37 @@ public class Forecast implements AlgorithmObserver, Component {
 	private JLabel label1;
 	private JLabel label2;
 	private JPanel jpanel;
-//	private Icon icon;
-//	private JLabel labelicon;
-//	private StyleContext context;
-//	private StyledDocument document;
-//	private Style labelStyle;
+	private Pattern findCoords;
+	private Matcher matcher;
+	private DefaultListModel listModel = new DefaultListModel();
 
 	@Override
 	public void handleResults(ArrayList<WeatherLocation> locations) {
-		//nie działa
-//		ArrayList<String> citiesList = new ArrayList<>();
-//		for(WeatherLocation wl : locations){
-//			citiesList.add(wl.toString());
-//		}
-//		jList = new JList(citiesList.toArray());
+
+		for(WeatherLocation l : locations){
+			System.out.print(l.toString() + "\n\n");
+
+			findCoords = Pattern.compile("\\d{1,3}\\.\\d+");
+			matcher = findCoords.matcher(l.toString());
+			while (matcher.find()){
+				places.add(matcher.group());
+			}
+		}
+
+		for(int c = 0; c < places.size()-1; c = c+2){
+			if(c % 2 == 0){
+				listModel.addElement(places.get(c) + ", " + places.get(c+1));
+			}
+		}
+
+//		System.out.print(listModel);
 
 		List list = new List();
 		jList.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				text.setText("");
 				list.printWeather(text, locations.get(e.getID()));
+//				list.printWeather(text, locations.get(e.getID()));
 			}
 		});
 	}
@@ -54,6 +67,8 @@ public class Forecast implements AlgorithmObserver, Component {
 
 		label1 = new JLabel("List of Places");
 		label2 = new JLabel("Weather Forecast");
+
+		jList = new JList(listModel);
 
 		pane1 = new JScrollPane(jList);
 		pane2 = new JScrollPane(text);
@@ -87,4 +102,9 @@ public class Forecast implements AlgorithmObserver, Component {
 		return wd.GetForecast(date, location);
 	}
 
+//	void makeList(){
+//		int counter;
+//
+//		for(counter)
+//	}
 }
