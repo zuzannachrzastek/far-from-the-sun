@@ -27,6 +27,8 @@ public class Algorithm implements Component {
 	}
 
 	public void findOptimalTour(ArrayList<WeatherLocation> points, PropertyChangeListener listener) {
+		System.out.println("...");
+
 		if (points.size() < 3) {
 			ArrayList<WeatherLocation> result = new ArrayList<WeatherLocation>();
 			LocalDate date = params.getDate();
@@ -54,6 +56,7 @@ public class Algorithm implements Component {
 					.getPopulationSize(), true));
 
 			for (int i = 0, n = params.getNumberOfGenerations(); i < n; i++) {
+				try { Thread.sleep(10); } catch (InterruptedException e){};
 				pop = algo.evolvePopulation(pop);
 				progress = 100 * (i+1)/n;
 				setProgress(Math.min(100, progress));

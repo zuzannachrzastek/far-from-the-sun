@@ -133,7 +133,7 @@ public class AlgorithmController extends JPanel implements PropertyChangeListene
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if ("progress" == evt.getPropertyName()) {
+		if ("progress".equals(evt.getPropertyName())) {
 			int progress = (Integer) evt.getNewValue();
 			progressMonitor.setProgress(progress);
 			String message = String.format("Completed %d%%.\n", progress);
