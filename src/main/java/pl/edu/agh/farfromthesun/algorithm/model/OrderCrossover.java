@@ -12,7 +12,7 @@ public class OrderCrossover implements Crossover, Nameable{
 		int from = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
 		int to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
 		Set<Location> assignedPoints = new HashSet<Location>();
-		Tour child = new Tour();
+		Tour child = new Tour(a.getManager());
 		
 		while (to == from) {
 			to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);

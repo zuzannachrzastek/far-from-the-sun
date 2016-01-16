@@ -1,17 +1,27 @@
 package pl.edu.agh.farfromthesun.forecast;
 
-import pl.edu.agh.farfromthesun.algorithm.AlgorithmObserver;
-import pl.edu.agh.farfromthesun.app.Component;
-import pl.edu.agh.farfromthesun.map.Location;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+
+import pl.edu.agh.farfromthesun.algorithm.AlgorithmObserver;
+import pl.edu.agh.farfromthesun.app.Component;
+import pl.edu.agh.farfromthesun.map.Location;
 
 public class Forecast implements AlgorithmObserver, Component {
 	
@@ -29,7 +39,7 @@ public class Forecast implements AlgorithmObserver, Component {
 	private DefaultListModel listModel = new DefaultListModel();
 
 	@Override
-	public void handleResults(ArrayList<WeatherLocation> locations) {
+	public void handleResults(java.util.List<WeatherLocation> locations) {
 
 		for(WeatherLocation l : locations){
 			System.out.print(l.toString() + "\n\n");

@@ -1,146 +1,131 @@
 package pl.edu.agh.farfromthesun.algorithm;
 
-import java.awt.BorderLayout;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.ProgressMonitor;
+import javax.swing.SwingWorker;
 
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import pl.edu.agh.farfromthesun.algorithm.Algorithm.Task;
-import pl.edu.agh.farfromthesun.algorithm.model.Crossover;
-import pl.edu.agh.farfromthesun.algorithm.model.Mutation;
+import pl.edu.agh.farfromthesun.algorithm.model.GeneticAlgorithm;
 import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
-import pl.edu.agh.farfromthesun.app.App;
+import pl.edu.agh.farfromthesun.algorithm.model.Population;
+import pl.edu.agh.farfromthesun.algorithm.model.TourManager;
+import pl.edu.agh.farfromthesun.app.Component;
+import pl.edu.agh.farfromthesun.forecast.Forecast;
+import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
+import pl.edu.agh.farfromthesun.map.Map;
 
-public class AlgorithmController extends JPanel implements PropertyChangeListener {
-	private static final long serialVersionUID = 8491592003308755995L;
-	private JButton btnStart, btnConfig;
-	private final Parameters parameters = Parameters.getInstance();
-	private ParametersSpinner population;
-	private ParametersSpinner generations;
-	private ParametersSpinner fitness;
-	private ParametersSpinner mutation;
-	private ParametersSpinner tournament;
-	private ParametersComboBox mutations;
-	private ParametersComboBox crossovers;
-	private ParametersDatepicker date;
-	private ParametersSpinner temperature;
+public class AlgorithmController implements Component {
+	private Parameters params = new Parameters();
+	private final LinkedList<AlgorithmObserver> observers = new LinkedList<AlgorithmObserver>();
+	private Map map;
+	private Forecast forecast;
+	private JFrame frame = null;
 	
-	private ProgressMonitor progressMonitor;
-
-	public AlgorithmController(JFrame frame, Algorithm ctrl) {
-		JPanel container = new JPanel();
-
-		this.setLayout(new BorderLayout());
-
-		btnStart = new JButton("Start");
-		btnConfig = new JButton("Config");
-
-		btnStart.addActionListener(e -> {
-			progressMonitor = new ProgressMonitor(AlgorithmController.this,
-					"Running algorithm...", "", 0, 100);
-			progressMonitor.setProgress(0);
-			ctrl.findOptimalTour(App.getMap().sendPlaces(), this);
-		});
-
-		btnConfig
-				.addActionListener(e -> {
-					ParametersDialog dialog = new ParametersDialog();
-
-					updateView(dialog);
-
-					int result = JOptionPane.showConfirmDialog(null, dialog,
-							"Edit parameters", JOptionPane.OK_CANCEL_OPTION,
-							JOptionPane.PLAIN_MESSAGE);
-					if (result == JOptionPane.OK_OPTION) {
-						/*HashMap<String, Object> params = dialog
-								.getInputValues();
-
-						for (Entry<String, Object> entry : params.entrySet()) {
-							System.out.println(entry.getKey() + ": "
-									+ entry.getValue());
-						}*/
-
-						updateModel(dialog);
-
-					}
-				});
-
-		container.add(btnConfig);
-		container.add(btnStart);
-
-		this.add(container, BorderLayout.LINE_END);
-		frame.getContentPane().add(this, BorderLayout.PAGE_END);
-	}
-
-	private void updateView(ParametersDialog dialog) {
-		LinkedList<ParametersPanel> panels = new LinkedList<ParametersPanel>();
-		
-		ParametersPanel algorithmPanel = new ParametersPanel("Algorithm");
-		ParametersPanel tripPanel = new ParametersPanel("Trip");
-		
-		panels.add(algorithmPanel);
-		panels.add(tripPanel);
-
-		UtilDateModel model = new UtilDateModel();
-		JDatePanelImpl datePanel = new JDatePanelImpl(model);
-		
-		population = new ParametersSpinner(parameters.getPopulationSize(), 0, 200, 1);
-		generations = new ParametersSpinner(parameters.getNumberOfGenerations(), 0, 200, 1);
-		fitness = new ParametersSpinner(parameters.getMinimumFitness(), 0, 100, 1);
-		mutation = new ParametersSpinner(parameters.getMutationRate(), 0, 1, 0.05);
-		tournament = new ParametersSpinner(parameters.getTournamentSize(), 0, 20, 1);
-		temperature = new ParametersSpinner(parameters.getTemperature(), -20, 40, 0.5);
-
-		mutations = new ParametersComboBox(parameters.getMutations());
-		crossovers = new ParametersComboBox(parameters.getCrossovers());
-
-		date = new ParametersDatepicker(datePanel);
-
-		algorithmPanel.addParameter("Population size", "population", population);
-		algorithmPanel.addParameter("Number of generations", "generations", generations);
-		algorithmPanel.addParameter("Minimum fitness", "fitness", fitness);
-		algorithmPanel.addParameter("Mutation rate", "mutation", mutation);
-		algorithmPanel.addParameter("Tournament size", "tournament", tournament);
-		algorithmPanel.addParameter("Mutation type", "mutationType", mutations);
-		algorithmPanel.addParameter("Crossover type", "crossoverType", crossovers);
-
-		tripPanel.addParameter("Start date", "date", date);
-		tripPanel.addParameter("Desired temperature", "temperature", temperature);
-
-		dialog.addPanels(panels);
-	}
-
-	private void updateModel(ParametersDialog dialog) {
-		parameters.setPopulationSize(((Double) population.getInputValue()).intValue());
-		parameters.setNumberOfGenerations(((Double) generations.getInputValue()).intValue());
-		parameters.setMinimumFitness(((Double) fitness.getInputValue()).intValue());
-		parameters.setMutationRate((Double) mutation.getInputValue());
-		parameters.setTournamentSize(((Double) tournament.getInputValue()).intValue());
-		parameters.setMutation((Mutation) mutations.getInputValue());
-		parameters.setCross((Crossover) crossovers.getInputValue());
-		parameters.setDate((LocalDate) date.getInputValue());
-		parameters.setTemperature((Double) temperature.getInputValue());
+	public AlgorithmController(Map map, Forecast forecast){
+		this.map = map;
+		this.forecast = forecast;
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		if ("progress" == evt.getPropertyName()) {
-			int progress = (Integer) evt.getNewValue();
-			progressMonitor.setProgress(progress);
-			String message = String.format("Completed %d%%.\n", progress);
-			progressMonitor.setNote(message);
-			if (progressMonitor.isCanceled()) {
-				((Task) evt.getSource()).cancel(true);
+	public void initialize(JFrame frame) {
+		this.frame = frame;
+		new AlgorithmConfigurationController(this);
+	}
+	
+	public JFrame getFrame(){
+		return frame;
+	}
+	
+	public Parameters getParameters(){
+		return params;
+	}
+	
+	public void setParameters(Parameters params){
+		this.params = params;
+	}
+	
+	public Map getMap(){
+		return map;
+	}
+
+	public void addObserver(AlgorithmObserver observer) {
+		if (!this.observers.contains(observer)) {
+			this.observers.add(observer);
+		}
+	}
+
+	private void handleResults(List<WeatherLocation> result) {
+		for (AlgorithmObserver observer : this.observers) {
+			observer.handleResults(result);
+		}
+	}
+
+	private List<WeatherLocation> wrapLocations(List<WeatherLocation> points) {
+		List<WeatherLocation> result = new ArrayList<WeatherLocation>();
+		LocalDate date = params.getDate();
+		for (int i = 0; i < points.size(); i++) {
+			result.add(forecast.getForecast(date, points.get(i)));
+		}
+
+		return result;
+	}
+
+	public void findOptimalTour(List<WeatherLocation> points,
+			PropertyChangeListener listener) {
+		if (points.size() < 3) {
+			handleResults(wrapLocations(points));
+		} else {
+
+			TourManager manager = new TourManager(points, params, forecast);
+
+			Task task = new Task(manager);
+			task.addPropertyChangeListener(listener);
+			task.execute();
+		}
+	}
+
+	class Task extends SwingWorker<List<WeatherLocation>, Void> {
+		private Population pop;
+		private TourManager manager;
+		private GeneticAlgorithm algo;
+		
+		public Task(TourManager manager){
+			this.manager = manager;
+			this.algo = new GeneticAlgorithm(manager);
+		}
+		
+		@Override
+		public List<WeatherLocation> doInBackground() {
+			int progress = 0;
+			setProgress(0);
+			
+			pop = algo.evolvePopulation(new Population(params
+					.getPopulationSize(), true, manager));
+
+			for (int i = 0, n = params.getNumberOfGenerations(); i < n; i++) {
+				pop = algo.evolvePopulation(pop);
+				progress = 100 * (i + 1) / n;
+				setProgress(Math.min(100, progress));
+			}
+
+			setProgress(100);
+			
+			return pop.getFittest().getPoints();
+		}
+
+		@Override
+		public void done() {
+			try {
+				handleResults(get());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
 		}
 	}
+
 }

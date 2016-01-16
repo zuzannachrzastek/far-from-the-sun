@@ -18,17 +18,7 @@ public class Parameters {
 	private double temperature;
 	private LocalDate date;
 
-	private static Parameters instance = null;
-
-	public static Parameters getInstance() {
-		if (instance == null) {
-			instance = new Parameters();
-		}
-
-		return instance;
-	}
-
-	private Parameters(int populationSize, int numberOfGenerations,
+	public Parameters(int populationSize, int numberOfGenerations,
 			int minimumFitness, double mutationRate, int tournamentSize,
 			int temperature) {
 		this.setPopulationSize(populationSize);
@@ -49,7 +39,7 @@ public class Parameters {
 		this.date = LocalDate.now();
 	}
 
-	private Parameters() {
+	public Parameters() {
 		this(100, 50, 70, 0.25, 5, 20);
 	}
 

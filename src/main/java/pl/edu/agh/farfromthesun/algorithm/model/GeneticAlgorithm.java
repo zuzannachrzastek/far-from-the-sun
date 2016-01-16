@@ -1,11 +1,17 @@
 package pl.edu.agh.farfromthesun.algorithm.model;
 
 public class GeneticAlgorithm {
-	private final Parameters params = Parameters.getInstance();
+	private final Parameters params;
+	private final TourManager manager;
 	private boolean found = false;
+	
+	public GeneticAlgorithm(TourManager manager){
+		this.manager = manager;
+		this.params = manager.getParameters();
+	}
 
 	public Population evolvePopulation(Population pop) {
-		Population newPopulation = new Population(pop.populationSize(), false);
+		Population newPopulation = new Population(pop.populationSize(), false, manager);
 
 		for (int i = 0; i < newPopulation.populationSize(); i++) {
 			Tour parent1 = tournamentSelection(pop);
@@ -31,7 +37,7 @@ public class GeneticAlgorithm {
 	}
 
 	private Tour tournamentSelection(Population pop) {
-		Population tournament = new Population(params.getTournamentSize(), false);
+		Population tournament = new Population(params.getPopulationSize(), false, manager);
 		
 		Tour fittest = pop.getFittest();
 		

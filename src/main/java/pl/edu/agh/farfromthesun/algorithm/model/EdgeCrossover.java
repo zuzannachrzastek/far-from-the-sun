@@ -20,7 +20,7 @@ public class EdgeCrossover implements Crossover, Nameable {
 				points.get(i).put(j, 0);
 			}
 		}
-		Tour child = new Tour();
+		Tour child = new Tour( a.getManager() );
 		for (int i = 0; i < a.tourSize(); i++) {
 			point2int.put(a.getPointAt(i), i);
 		}

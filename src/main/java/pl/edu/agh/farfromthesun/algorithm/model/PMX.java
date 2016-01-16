@@ -11,7 +11,7 @@ public class PMX implements Crossover, Nameable {
 	public Tour cross(Tour a, Tour b) {
 		int from = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
 		int to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		Tour child = new Tour();
+		Tour child = new Tour(a.getManager());
 		Map<Location, Integer> parentA = new HashMap<Location, Integer>();
 		Map<Location, Integer> parentB = new HashMap<Location, Integer>();
 		for (int i = 1; i < a.tourSize(); i++) {
