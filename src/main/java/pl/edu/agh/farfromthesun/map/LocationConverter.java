@@ -4,39 +4,37 @@ import org.openstreetmap.gui.jmapviewer.Coordinate;
 import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by M on 2015-12-01.
  */
 public class LocationConverter {
 
-    private ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
-    private ArrayList<WeatherLocation> places = new ArrayList<WeatherLocation>();
+    private List<Coordinate> coordinates = new ArrayList<>();
+    private List<WeatherLocation> places = new ArrayList<>();
 
     public LocationConverter() {}
 
-    public void setCoordinates(ArrayList<Coordinate> coordinates) {
+    public void setCoordinates(List<Coordinate> coordinates) {
         this.coordinates = coordinates;
-    }
-
-    public void setPlaces(ArrayList<WeatherLocation> places) {
-        this.places = places;
-    }
-
-    public ArrayList<WeatherLocation> getPlaces() {
         makePlaces();
+    }
+
+    public void setPlaces(List<WeatherLocation> places) {
+        this.places = places;
+        makeCoordinates();
+    }
+
+    public List<WeatherLocation> getPlaces() {
+       // makePlaces();
         return places;
     }
 
-    public ArrayList<Coordinate> getCoordinates() {
-        makeCoordinates();
+    public List<Coordinate> getCoordinates() {
+        //makeCoordinates();
         return coordinates;
     }
-
-    /*
-    Nie jest FoolProof!!!
-    Jest problem z kolejnoscia, np. ktos chce zrobic dwa razy pod rzad makePlaces
-     */
 
     private void makePlaces() {
         if (coordinates.isEmpty()) return;

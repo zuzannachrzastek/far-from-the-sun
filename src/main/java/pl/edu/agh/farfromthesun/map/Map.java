@@ -27,16 +27,17 @@ import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 public class Map implements AlgorithmObserver, JMapViewerEventListener, Component {
 
-	private ArrayList<Coordinate> coordinates = new ArrayList<>();
-	private ArrayList<WeatherLocation> places = new ArrayList<>();
+	private List<Coordinate> coordinates = new ArrayList<>();
+	private List<WeatherLocation> places = new ArrayList<>();
 	private JMapViewer treeMap;
 	private boolean listenerFlag = true;
+	final Dimension MAP_DIMENSION = new Dimension(700,600);
 
 	@Override
 	public void initialize(JFrame frame) {
 
 		treeMap = new JMapViewer();
-		treeMap.setPreferredSize(new Dimension(700,600));
+		treeMap.setPreferredSize(MAP_DIMENSION);
 		treeMap.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (listenerFlag) {
@@ -68,23 +69,13 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 
 	 */
 	public void deleteLast() {
-		if (listenerFlag == false) return;
+		if (!listenerFlag) return;
 		Coordinate c = coordinates.get(coordinates.size()-1);
-		treeMap.removeAllMapMarkers();;
+		treeMap.removeAllMapMarkers();
 		this.coordinates.remove(c);
 		for (Coordinate cor : coordinates) {
 			treeMap.addMapMarker(new MapMarkerDot(cor));
 		}
-	}
-
-	/*
-
-	CHWILOWY listener, usunac razem z btnStart jesli bedzie gotowy ostateczny przycisk Start
-
-	 */
-		public void startListener() {
-		listenerFlag = false;
-		drawRoute();
 	}
 
 	private void drawRoute() {
@@ -96,7 +87,7 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 		for (int i = 0; i<coordinates.size()-1; i++ ) {
 			one = coordinates.get(i);
 			two = coordinates.get(i+1);
-			route = new ArrayList<Coordinate>(Arrays.asList(one, two, two));
+			route = new ArrayList<>(Arrays.asList(one, two, two));
 			treeMap.addMapPolygon(new MyMapMarkerArrow(route));
 		}
 /*
@@ -117,7 +108,7 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 
 	*/
 
-	public ArrayList<WeatherLocation> sendPlaces() {
+	public List<WeatherLocation> sendPlaces() {
 		listenerFlag = false;
 		LocationConverter placeConverter = new LocationConverter();
 		placeConverter.setCoordinates(coordinates);
@@ -134,7 +125,7 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 	 */
 
 	@Override
-	public void handleResults(ArrayList<WeatherLocation> locations) {
+	public void handleResults(List<WeatherLocation> locations) {
 		LocationConverter placeConverter = new LocationConverter();
 		placeConverter.setPlaces(locations);
 		coordinates = placeConverter.getCoordinates();
