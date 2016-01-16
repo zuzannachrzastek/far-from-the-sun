@@ -1,14 +1,21 @@
 package pl.edu.agh.farfromthesun.algorithm.model;
 
+
 public class Population {
 	private Tour[] tours;
 
-	public Population(int size, boolean first, TourManager manager) {
+	public Population(int size, TourManager manager) {
+		this(size);
+		initializeTours(manager);
+	}
+	
+	public Population(int size){
 		tours = new Tour[size];
-		if (first) {
-			for (int i = 0; i < size; i++) {
-				setTour(i, new Tour(manager));
-			}
+	}
+	
+	private void initializeTours(TourManager manager){
+		for (int i = 0; i < populationSize(); i++) {
+			setTour(i, new Tour(manager));
 		}
 	}
 
@@ -25,7 +32,7 @@ public class Population {
 	}
 
 	public Tour getFittest() {
-		Tour fittest = tours[0];
+		Tour fittest = getTour(0);
 		for (int i = 1; i < populationSize(); i++) {
 			if (fittest.getFitness() <= getTour(i).getFitness()) {
 				fittest = getTour(i);

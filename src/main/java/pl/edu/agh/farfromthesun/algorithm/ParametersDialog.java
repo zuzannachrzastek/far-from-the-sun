@@ -17,7 +17,7 @@ import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
 
 class ParametersDialog extends JPanel {
 	private static final long serialVersionUID = 1635902385403603282L;
-	private LinkedList<ParametersPanel> panels;
+	private LinkedList<ParametersPanel> panels = new LinkedList<ParametersPanel>();
 	
 	private ParametersSpinner population;
 	private ParametersSpinner generations;
@@ -63,6 +63,9 @@ class ParametersDialog extends JPanel {
 
 		tripPanel.addParameter("Start date", "date", date);
 		tripPanel.addParameter("Desired temperature", "temperature", temperature);
+		
+		this.add(algorithmPanel);
+		this.add(tripPanel);
 	}
 	
 	public Parameters getParameters(){
@@ -92,11 +95,5 @@ class ParametersDialog extends JPanel {
 		}
 
 		return values;
-	}
-
-	public void addPanels() {
-		for(JPanel panel : panels){
-			this.add(panel);
-		}
 	}
 }

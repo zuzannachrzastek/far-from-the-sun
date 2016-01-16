@@ -1,6 +1,5 @@
 package pl.edu.agh.farfromthesun.algorithm;
 
-import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,7 +11,6 @@ import javax.swing.SwingWorker;
 
 import pl.edu.agh.farfromthesun.algorithm.model.GeneticAlgorithm;
 import pl.edu.agh.farfromthesun.algorithm.model.Parameters;
-import pl.edu.agh.farfromthesun.algorithm.model.Population;
 import pl.edu.agh.farfromthesun.algorithm.model.TourManager;
 import pl.edu.agh.farfromthesun.app.Component;
 import pl.edu.agh.farfromthesun.forecast.Forecast;
@@ -25,6 +23,7 @@ public class AlgorithmController implements Component {
 	private Map map;
 	private Forecast forecast;
 	private JFrame frame = null;
+	private Task task;
 	
 	public AlgorithmController(Map map, Forecast forecast){
 		this.map = map;
@@ -75,27 +74,26 @@ public class AlgorithmController implements Component {
 		return result;
 	}
 
-	public void findOptimalTour(List<WeatherLocation> points,
-			PropertyChangeListener listener) {
+	public void findOptimalTour(List<WeatherLocation> points) {
 		if (points.size() < 3) {
 			handleResults(wrapLocations(points));
 		} else {
 
 			TourManager manager = new TourManager(points, params, forecast);
 
-			Task task = new Task(manager);
-			task.addPropertyChangeListener(listener);
+			task = new Task(manager);
 			task.execute();
 		}
 	}
+	
+	public Task getTask(){
+		return task;
+	}
 
 	class Task extends SwingWorker<List<WeatherLocation>, Void> {
-		private Population pop;
-		private TourManager manager;
 		private GeneticAlgorithm algo;
 		
 		public Task(TourManager manager){
-			this.manager = manager;
 			this.algo = new GeneticAlgorithm(manager);
 		}
 		
@@ -103,19 +101,16 @@ public class AlgorithmController implements Component {
 		public List<WeatherLocation> doInBackground() {
 			int progress = 0;
 			setProgress(0);
-			
-			pop = algo.evolvePopulation(new Population(params
-					.getPopulationSize(), true, manager));
 
 			for (int i = 0, n = params.getNumberOfGenerations(); i < n; i++) {
-				pop = algo.evolvePopulation(pop);
-				progress = 100 * (i + 1) / n;
+				algo.evolvePopulation();
+				progress = (int) 100.0 * (i + 1) / n;
 				setProgress(Math.min(100, progress));
 			}
 
 			setProgress(100);
 			
-			return pop.getFittest().getPoints();
+			return algo.getResult();
 		}
 
 		@Override

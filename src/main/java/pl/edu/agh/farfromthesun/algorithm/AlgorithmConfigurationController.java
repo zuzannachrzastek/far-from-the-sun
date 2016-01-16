@@ -1,27 +1,29 @@
 package pl.edu.agh.farfromthesun.algorithm;
 
 import java.awt.BorderLayout;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ProgressMonitor;
+import javax.swing.Timer;
 
 import pl.edu.agh.farfromthesun.algorithm.AlgorithmController.Task;
 
-public class AlgorithmConfigurationController extends JPanel implements PropertyChangeListener {
+public class AlgorithmConfigurationController extends JPanel {
 	private static final long serialVersionUID = 8491592003308755995L;
 	private JButton btnStart, btnConfig;
 	private AlgorithmController ctrl;
 	private ProgressMonitor progressMonitor;
+	private Timer cancelMonitor;
 
 	public AlgorithmConfigurationController(AlgorithmController ctrl) {
 		JPanel container = new JPanel();
 		JFrame frame = ctrl.getFrame();
-		
+
 		this.ctrl = ctrl;
 
 		this.setLayout(new BorderLayout());
@@ -29,16 +31,39 @@ public class AlgorithmConfigurationController extends JPanel implements Property
 		btnStart = new JButton("Start");
 		btnConfig = new JButton("Config");
 
+		cancelMonitor = new Timer(500, new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				Task task = ctrl.getTask();
+				if (progressMonitor.isCanceled()) {
+					task.cancel(true);
+					cancelMonitor.stop();
+				} else if (task.isDone()) {
+					progressMonitor.close();
+					cancelMonitor.stop();
+				} else {
+					int progress = task.getProgress();
+					progressMonitor.setNote(String.format("Completed %d%%.\n",
+							progress));
+					progressMonitor.setProgress(progress);
+				}
+			}
+		});
+
 		btnStart.addActionListener(e -> {
-			progressMonitor = new ProgressMonitor(AlgorithmConfigurationController.this,
-					"Running algorithm...", "", 0, 100);
-			progressMonitor.setProgress(0);
-			ctrl.findOptimalTour(ctrl.getMap().sendPlaces(), this);
+			progressMonitor = new ProgressMonitor(ctrl.getFrame(),
+					"Running algorithm...", "Setting up", 0, 100);
+			progressMonitor.setMillisToPopup(0);
+			progressMonitor.setMillisToDecideToPopup(0);
+			
+			cancelMonitor.start();
+
+			ctrl.findOptimalTour(ctrl.getMap().sendPlaces());
 		});
 
 		btnConfig
 				.addActionListener(e -> {
-					ParametersDialog dialog = new ParametersDialog(ctrl.getParameters());
+					ParametersDialog dialog = new ParametersDialog(ctrl
+							.getParameters());
 
 					int result = JOptionPane.showConfirmDialog(null, dialog,
 							"Edit parameters", JOptionPane.OK_CANCEL_OPTION,
@@ -57,18 +82,5 @@ public class AlgorithmConfigurationController extends JPanel implements Property
 
 	private void updateModel(ParametersDialog dialog) {
 		ctrl.setParameters(dialog.getParameters());
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		if ("progress" == evt.getPropertyName()) {
-			int progress = (Integer) evt.getNewValue();
-			progressMonitor.setProgress(progress);
-			String message = String.format("Completed %d%%.\n", progress);
-			progressMonitor.setNote(message);
-			if (progressMonitor.isCanceled()) {
-				((Task) evt.getSource()).cancel(true);
-			}
-		}
 	}
 }
