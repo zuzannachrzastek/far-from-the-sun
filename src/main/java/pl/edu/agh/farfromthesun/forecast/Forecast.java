@@ -43,7 +43,7 @@ public class Forecast implements AlgorithmObserver, Component {
 
 	@Override
 	public void handleResults(java.util.List<WeatherLocation> locations) {
-
+		singleCoord.clear();
 		for(WeatherLocation l : locations){ findCoordinatesInArray(l); }
 
 		writeTwoCoordsByPlaceIntoArray();
@@ -89,6 +89,7 @@ public class Forecast implements AlgorithmObserver, Component {
 	}
 
 	private void writeTwoCoordsByPlaceIntoArray(){
+		listModel.clear();
 		for(int c = 0; c < singleCoord.size()-1; c = c+2){
 			if(c % 2 == 0){
 				listModel.addElement(singleCoord.get(c) + ", " + singleCoord.get(c+1));
