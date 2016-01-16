@@ -63,7 +63,7 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 		container.add(btnDelete);
 		container.add(btnReset);
 
-		frame.getContentPane().add(treeMap, BorderLayout.EAST);
+		frame.getContentPane().add(treeMap, BorderLayout.CENTER);
 		frame.getContentPane().add(container, BorderLayout.NORTH);
 
 	}
