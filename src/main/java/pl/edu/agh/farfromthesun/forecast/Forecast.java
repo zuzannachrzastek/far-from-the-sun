@@ -5,9 +5,6 @@ import pl.edu.agh.farfromthesun.app.Component;
 import pl.edu.agh.farfromthesun.map.Location;
 
 import javax.swing.*;
-import javax.swing.text.Style;
-import javax.swing.text.StyleContext;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -99,6 +96,6 @@ public class Forecast implements AlgorithmObserver, Component {
 	}
 	
 	public WeatherLocation getForecast(LocalDate date, Location location){
-		return wd.GetForecast(date, location);
+		return wd.getForecast(date, location);
 	}
 }

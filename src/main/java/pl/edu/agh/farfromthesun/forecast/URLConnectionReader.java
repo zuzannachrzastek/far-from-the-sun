@@ -13,7 +13,7 @@ public class URLConnectionReader {
     private static final String HTTP = "http://api.wunderground.com/api/2fdf99a36a9af682/forecast10day/PL/q/";
     private static final String FORMAT = ".json";
 
-    public String GetForecastData(String coordinates) throws IOException {
+    public String getForecastData(String coordinates) throws IOException {
         BufferedReader in = null;
         try {
             URL url = new URL(HTTP + coordinates + FORMAT); //cordinates: latitude,longitude
