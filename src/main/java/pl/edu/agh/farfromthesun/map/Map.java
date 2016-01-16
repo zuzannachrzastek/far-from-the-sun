@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
+import org.openstreetmap.gui.jmapviewer.JMapViewerTree;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.events.JMVCommandEvent;
 import org.openstreetmap.gui.jmapviewer.interfaces.JMapViewerEventListener;
@@ -32,7 +33,6 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 	private JMapViewer treeMap;
 	private boolean listenerFlag = true;
 	final Dimension MAP_DIMENSION = new Dimension(700,600);
-
 	@Override
 	public void initialize(JFrame frame) {
 
@@ -50,9 +50,18 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 			}});
 
 		JButton btnDelete = new JButton("Delete");
+		JButton btnReset = new JButton("Reset");
 		JPanel container = new JPanel();
 		btnDelete.addActionListener(e -> deleteLast());
+		btnReset.addActionListener(e -> {
+			listenerFlag = true;
+			treeMap.removeAllMapMarkers();
+			coordinates.clear();
+			treeMap.removeAllMapPolygons();
+			System.out.println("Removed all coordinates");
+		});
 		container.add(btnDelete);
+		container.add(btnReset);
 		frame.getContentPane().add(treeMap, BorderLayout.EAST);
 		frame.getContentPane().add(container, BorderLayout.NORTH);
 
@@ -90,16 +99,7 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 			route = new ArrayList<>(Arrays.asList(one, two, two));
 			treeMap.addMapPolygon(new MyMapMarkerArrow(route));
 		}
-/*
-		one = coordinates.get(0);
-		two = coordinates.get(coordinates.size()-1);
-		route = new ArrayList<Coordinate>(Arrays.asList(two, one, one));
-		treeMap.addMapPolygon(new MyMapMarkerArrow(route));*/
-
 	}
-
-
-
 	/*
 
 	Tutaj znajduje sie czesc, ktora powinna byc wykonana natcyhmiast po kliknieciu przyisku START
