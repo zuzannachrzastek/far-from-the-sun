@@ -6,9 +6,6 @@ import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by M on 2015-12-01.
- */
 public class LocationConverter {
 
     private List<Coordinate> coordinates = new ArrayList<>();
@@ -27,12 +24,10 @@ public class LocationConverter {
     }
 
     public List<WeatherLocation> getPlaces() {
-       // makePlaces();
         return places;
     }
 
     public List<Coordinate> getCoordinates() {
-        //makeCoordinates();
         return coordinates;
     }
 
@@ -51,7 +46,4 @@ public class LocationConverter {
             coordinates.add(c);
         }
     }
-
-
-
 }

@@ -42,16 +42,15 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 			public void mouseClicked(MouseEvent e) {
 				if (listenerFlag) {
 					Point p = e.getPoint();
-					Coordinate marker = (Coordinate) treeMap.getPosition(p);
 					System.out.println(treeMap.getPosition(p));
-					treeMap.addMapMarker(new MapMarkerDot(marker));
-					coordinates.add(marker);
+					addMarker(p);
 				}
 			}});
 
 		JButton btnDelete = new JButton("Delete");
 		JButton btnReset = new JButton("Reset");
 		JPanel container = new JPanel();
+
 		btnDelete.addActionListener(e -> deleteLast());
 		btnReset.addActionListener(e -> {
 			listenerFlag = true;
@@ -60,18 +59,22 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 			treeMap.removeAllMapPolygons();
 			System.out.println("Removed all coordinates");
 		});
+
 		container.add(btnDelete);
 		container.add(btnReset);
+
 		frame.getContentPane().add(treeMap, BorderLayout.EAST);
 		frame.getContentPane().add(container, BorderLayout.NORTH);
 
 	}
 
-
+	private void addMarker(Point p) {
+		Coordinate marker = (Coordinate) treeMap.getPosition(p);
+		treeMap.addMapMarker(new MapMarkerDot(marker));
+		coordinates.add(marker);
+	}
 
 	//listener methods
-
-
 	/*
 
 	deleteLast to listener do btnDelete, przepiac do btnDelete jest zostanie przeniesiony
