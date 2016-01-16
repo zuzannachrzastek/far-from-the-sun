@@ -18,18 +18,23 @@ public class List extends JPanel {
         appendText(String.valueOf(wl.getLat()) + "\n",pane);
         appendText("Logitude: ", pane);
         appendText(String.valueOf(wl.getLon()) + "\n", pane);
-        appendText("High Temperature: ", pane);
-        appendText(String.valueOf(wl.getHighTemp()) + "\n", pane);
-        appendText("Low Temperature: ", pane);
-        appendText(String.valueOf(wl.getLowTemp()) + "\n", pane);
+        appendText("Highest Temperature: ", pane);
+        appendText(String.valueOf(wl.getHighTemp()), pane);
+        appendText(" st. C \n", pane);
+        appendText("Lowest Temperature: ", pane);
+        appendText(String.valueOf(wl.getLowTemp()), pane);
+        appendText(" st. C \n", pane);
         appendText("Precipitation Type: ", pane);
         appendText(wl.getPrecipitationType().toString() + "\n", pane);
         appendText("Precipitation Level: ", pane);
-        appendText(String.valueOf(wl.getPrecipitationLevel()) + "\n", pane);
+        appendText(String.valueOf(wl.getPrecipitationLevel()), pane);
+        appendText(" mm \n", pane);
         appendText("Average Wind: ", pane);
-        appendText(String.valueOf(wl.getAveWind()) + "\n", pane);
+        appendText(String.valueOf(wl.getAveWind()), pane);
+        appendText(" km/h \n", pane);
         appendText("Average Humidity: ", pane);
-        appendText(String.valueOf(wl.getAveHumidity()) + "\n", pane);
+        appendText(String.valueOf(wl.getAveHumidity()), pane);
+        appendText(" % \n", pane);
 
     }
 

@@ -26,45 +26,36 @@ import pl.edu.agh.farfromthesun.map.Location;
 public class Forecast implements AlgorithmObserver, Component {
 	
 	private final WeatherDownloader wd = new WeatherDownloader();
-	private ArrayList<String> places = new ArrayList<>();
-	private JList jList;
-	private final JTextPane text = new JTextPane();
-	private JScrollPane pane1;
-	private JScrollPane pane2;
-	private JLabel label1;
-	private JLabel label2;
+	private ArrayList<String> singleCoord = new ArrayList<>();
+	private JList listOfPlaces;
+	private final JTextPane details = new JTextPane();
+	private JScrollPane listPane;
+	private JScrollPane detailsPane;
+	private JLabel listLabel;
+	private JLabel detailsLabel;
 	private JPanel jpanel;
 	private Pattern findCoords;
 	private Matcher matcher;
+	private static String COORDSPATTERN = "\\d{1,3}\\.\\d+";
 	private DefaultListModel listModel = new DefaultListModel();
+	private static int WIDTH = 270;
+	private static int HEIGHT = 200;
 
 	@Override
 	public void handleResults(java.util.List<WeatherLocation> locations) {
 
-		for(WeatherLocation l : locations){
-			System.out.print(l.toString() + "\n\n");
+		for(WeatherLocation l : locations){ findCoordinatesInArray(l); }
 
-			findCoords = Pattern.compile("\\d{1,3}\\.\\d+");
-			matcher = findCoords.matcher(l.toString());
-			while (matcher.find()){
-				places.add(matcher.group());
-			}
-		}
-
-		for(int c = 0; c < places.size()-1; c = c+2){
-			if(c % 2 == 0){
-				listModel.addElement(places.get(c) + ", " + places.get(c+1));
-			}
-		}
+		writeTwoCoordsByPlaceIntoArray();
 
 		List list = new List();
-		jList.addMouseListener(new MouseAdapter() {
+		listOfPlaces.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				JList thelist = (JList)e.getSource();
-				text.setText("");
+				details.setText("");
 				int index = thelist.locationToIndex(e.getPoint());
 				if(index >= 0){
-					list.printWeather(text, locations.get(index));
+					list.printWeather(details, locations.get(index));
 				}
 			}
 		});
@@ -73,38 +64,61 @@ public class Forecast implements AlgorithmObserver, Component {
 	@Override
 	public void initialize(JFrame frame) {
 
-		label1 = new JLabel("List of Places");
-		label2 = new JLabel("Weather Forecast");
+		listLabel = new JLabel("List of Places");
+		detailsLabel = new JLabel("Weather Forecast");
 
-		jList = new JList(listModel);
+		listOfPlaces = new JList(listModel);
+		listPane = new JScrollPane(listOfPlaces);
+		detailsPane = new JScrollPane(details);
 
-		pane1 = new JScrollPane(jList);
-		pane2 = new JScrollPane(text);
+		setListSize();
+		setDetailsSize();
 
-		pane1.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-		pane1.setPreferredSize(new Dimension(270,200));
-		pane1.setMinimumSize(new Dimension(270,200));
-
-		pane2.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-		pane2.setPreferredSize(new Dimension(270,250));
-		pane2.setMinimumSize(new Dimension(270,250));
-
-		text.setEditable(false);
+		details.setEditable(false);
 
 		jpanel = new JPanel();
+		makeJPanel(frame);
+	}
 
+	private void findCoordinatesInArray(WeatherLocation l){
+		findCoords = Pattern.compile(COORDSPATTERN);
+		matcher = findCoords.matcher(l.toString());
+		while (matcher.find()){
+			singleCoord.add(matcher.group());
+		}
+	}
+
+	private void writeTwoCoordsByPlaceIntoArray(){
+		for(int c = 0; c < singleCoord.size()-1; c = c+2){
+			if(c % 2 == 0){
+				listModel.addElement(singleCoord.get(c) + ", " + singleCoord.get(c+1));
+			}
+		}
+	}
+
+	private void setListSize(){
+		listPane.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+		listPane.setPreferredSize(new Dimension(WIDTH,HEIGHT));
+		listPane.setMinimumSize(new Dimension(WIDTH,HEIGHT));
+	}
+
+	private void setDetailsSize(){
+		detailsPane.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+		detailsPane.setPreferredSize(new Dimension(WIDTH,HEIGHT));
+		detailsPane.setMinimumSize(new Dimension(WIDTH,HEIGHT));
+	}
+
+	private void makeJPanel(JFrame frame){
 		jpanel.setLayout(new BoxLayout(jpanel, BoxLayout.PAGE_AXIS));
 		jpanel.add(Box.createHorizontalGlue());
-		jpanel.add(label1);
-		jpanel.add(pane1);
+		jpanel.add(listLabel);
+		jpanel.add(listPane);
 		jpanel.add(Box.createRigidArea(new Dimension(10, 0)));
-		jpanel.add(label2);
-		jpanel.add(pane2);
-
-
+		jpanel.add(detailsLabel);
+		jpanel.add(detailsPane);
 		frame.getContentPane().add(jpanel, BorderLayout.WEST);
 	}
-	
+
 	public WeatherLocation getForecast(LocalDate date, Location location){
 		return wd.getForecast(date, location);
 	}
