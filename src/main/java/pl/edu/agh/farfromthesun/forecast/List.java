@@ -16,7 +16,7 @@ public class List extends JPanel {
         appendText(wl.getDate().toString() + "\n", pane);
         appendText("Latitude: ", pane);
         appendText(String.valueOf(wl.getLat()) + "\n",pane);
-        appendText("Logitude: ", pane);
+        appendText("Longitude: ", pane);
         appendText(String.valueOf(wl.getLon()) + "\n", pane);
         appendText("Highest Temperature: ", pane);
         appendText(String.valueOf(wl.getHighTemp()), pane);

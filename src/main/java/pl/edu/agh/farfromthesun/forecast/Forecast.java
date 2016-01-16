@@ -36,7 +36,7 @@ public class Forecast implements AlgorithmObserver, Component {
 	private JPanel jpanel;
 	private Pattern findCoords;
 	private Matcher matcher;
-	private static String COORDSPATTERN = "\\d{1,3}\\.\\d+";
+	private static String COORDSPATTERN = "\\-?\\d{1,3}\\.\\d+";
 	private DefaultListModel listModel = new DefaultListModel();
 	private static int WIDTH = 270;
 	private static int HEIGHT = 200;
