@@ -2,23 +2,42 @@ package pl.edu.agh.farfromthesun.forecast;
 
 import pl.edu.agh.farfromthesun.map.Location;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class WeatherDownloader implements IWeatherDownloader{
 
-    public WeatherLocation GetForecast(LocalDate date, Location location){
-        return ForecastCache.GetCachedForecastData(date, location);
+    public WeatherLocation getForecast(LocalDate date, Location location){
+        WeatherLocation wl = ForecastCache.getCachedForecastData(date, location);
+        if(wl == null){
+            try {
+                URLConnectionReader urlConnReader = new URLConnectionReader();
+                String forecastDataString = urlConnReader.getForecastData(getStringCoordinates(location));
+                IWeatherParser parser = new JSONParser();
+                return parser.getForecast(date, location, forecastDataString);
+            } catch (IOException e) {
+                e.printStackTrace(); //?
+                IWeatherParser parser = new JSONParser();
+                return parser.getEmptyForecastDataObject(date, location);
+            }
+        }
+
+        return wl;
+    }
+
+    private String getStringCoordinates(Location point){
+        return String.valueOf(point.getLat()) + "," + String.valueOf(point.getLon());
     }
 
     public void writeData(){
-        WeatherLocation fd = GetForecast(LocalDate.now(), new Location(50.060, 19.959));
+        WeatherLocation fd = getForecast(LocalDate.now(), new Location(50.060, 19.959));
         if(fd == null){
             System.out.println("Forecast has not been downloaded - date out of range or bad coordinates");
             return;
         }
         Write(fd);
         LocalDate currDate  = LocalDate.now();
-        WeatherLocation ff = ForecastCache.GetCachedForecastData( LocalDate.of(currDate.getYear(), currDate.getMonthValue(),currDate.getDayOfMonth() + 3),new Location(50.060, 19.959));
+        WeatherLocation ff = ForecastCache.getCachedForecastData( LocalDate.of(currDate.getYear(), currDate.getMonthValue(),currDate.getDayOfMonth() + 3),new Location(50.060, 19.959));
         Write(ff);
 
         System.out.print("cache list size:" + ForecastCache.cacheList.size());

@@ -14,7 +14,7 @@ public class MyMapMarkerArrow extends MapPolygonImpl {
     public MyMapMarkerArrow(List<? extends ICoordinate> points) {
         super(null, null, points);
     }
-
+    final int ARROW_LENGHT = 20;
     @Override
     public void paint(Graphics g, List<Point> points) {
         Graphics2D g2d = (Graphics2D) g.create();
@@ -38,55 +38,66 @@ public class MyMapMarkerArrow extends MapPolygonImpl {
 
             //pierwszy punkt nizej
             if (points.get(0).getY() > points.get(1).getY()) {
-
                 // i po lewej
                 if (points.get(0).getX() > points.get(1).getX()) {
-                    path.lineTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY() + 20);
-
-                    path.moveTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY());
-
-                    path.lineTo(points.get(pointsSize).getX() + 20,
-                            points.get(pointsSize).getY());
+                    downLeft(path,points,pointsSize);
                 }
                 // i po prawej
                 else {
-                    path.lineTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY() + 20);
-
-                    path.moveTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY());
-
-                    path.lineTo(points.get(pointsSize).getX() - 20,
-                            points.get(pointsSize).getY());
+                    downRight(path,points,pointsSize);
                 }
             //pierwszy punkt wyzej
             } else {
                 // i po lewej
                 if (points.get(0).getX() > points.get(1).getX()) {
-                    path.lineTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY() - 20);
-
-                    path.moveTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY());
-
-                    path.lineTo(points.get(pointsSize).getX() + 20,
-                            points.get(pointsSize).getY());
+                    upLeft(path,points,pointsSize);
                 }
                 else {
-                    path.lineTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY() - 20);
-
-                    path.moveTo(points.get(pointsSize).getX(),
-                            points.get(pointsSize).getY());
-
-                    path.lineTo(points.get(pointsSize).getX() - 20,
-                            points.get(pointsSize).getY());
+                    upRight(path,points,pointsSize);
                 }
-
             }
         }
         return path;
+    }
+    //metody do rysowania strzalki
+    private void downLeft(Path2D path, List<Point> points, int pointsSize){
+        path.lineTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY() + ARROW_LENGHT);
+
+        path.moveTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY());
+
+        path.lineTo(points.get(pointsSize).getX() + ARROW_LENGHT,
+                points.get(pointsSize).getY());
+    }
+    private void downRight(Path2D path, List<Point> points, int pointsSize){
+        path.lineTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY() + ARROW_LENGHT);
+
+        path.moveTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY());
+
+        path.lineTo(points.get(pointsSize).getX() - ARROW_LENGHT,
+                points.get(pointsSize).getY());
+    }
+    private void upLeft(Path2D path, List<Point> points, int pointsSize){
+        path.lineTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY() - ARROW_LENGHT);
+
+        path.moveTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY());
+
+        path.lineTo(points.get(pointsSize).getX() + ARROW_LENGHT,
+                points.get(pointsSize).getY());
+    }
+    private void upRight(Path2D path, List<Point> points, int pointsSize){
+        path.lineTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY() - ARROW_LENGHT);
+
+        path.moveTo(points.get(pointsSize).getX(),
+                points.get(pointsSize).getY());
+
+        path.lineTo(points.get(pointsSize).getX() - ARROW_LENGHT,
+                points.get(pointsSize).getY());
     }
 }

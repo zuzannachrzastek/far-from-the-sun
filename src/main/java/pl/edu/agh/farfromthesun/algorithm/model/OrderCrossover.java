@@ -9,44 +9,36 @@ public class OrderCrossover implements Crossover, Nameable{
 
 	@Override
 	public Tour cross(Tour a, Tour b) {
-		int from = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		int to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		Set<Location> assignedPoints = new HashSet<Location>();
-		Tour child = new Tour();
+		int from = (int) ((Math.random() * (a.tourSize() - 2)) + 1);
+		int to = (int) ((Math.random() * (a.tourSize() - from - 1)) + from);
 		
-		while (to == from) {
-			to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		}
-		if (from > to) {
-			from += to;
-			to = from - to;
-			from -= to;
-		}
-		for(int i = 1; i < a.tourSize(); i++){
+		Set<Location> assignedPoints = new HashSet<Location>();
+		Tour child = new Tour(a.getManager());
+
+		for(int i = 1; i < a.tourSize(); i++){ //first points remains unchanged, rest will be changed
 			child.setPoint(i, null);
 		}
 		assignedPoints.add(a.getPointAt(0));
-		for (int i = from; i <= to; i++) {
+		
+		for (int i = from; i <= to; i++) { //copy points in range(from, to) from parent A
 			child.setPoint(i, a.getPointAt(i));	
 			assignedPoints.add(a.getPointAt(i));
 		}
+		
 		int iteratorB = (to + 1) % a.tourSize();
-		for (int i = (to + 1); i < a.tourSize(); i++) {
-			while(assignedPoints.contains(b.getPointAt(iteratorB))){
-				iteratorB = (iteratorB + 1) % a.tourSize();
+		int iteratorChild = (to + 1) % a.tourSize();
+		while(assignedPoints.size() < a.tourSize()){ //copy rest in order in which they are in parent B
+			if(!assignedPoints.contains(b.getPointAt(iteratorB))){ //copy only not copied from parent A
+				child.setPoint(iteratorChild, b.getPointAt(iteratorB));
+				assignedPoints.add(b.getPointAt(iteratorB));
+				iteratorChild = (iteratorChild % (a.tourSize() - 1)) + 1; //skip 0;
 			}
-			child.setPoint(i, b.getPointAt(iteratorB));
-			assignedPoints.add(b.getPointAt(iteratorB));
-		}
-		for (int i = 1; i < from; i++) {
-			while(assignedPoints.contains(b.getPointAt(iteratorB))){
-				iteratorB = (iteratorB + 1) % a.tourSize();
-			}
-			child.setPoint(i, b.getPointAt(iteratorB));
-			assignedPoints.add(b.getPointAt(iteratorB));
+			iteratorB = (iteratorB % (a.tourSize() - 1)) + 1;
 		}
 		return child;
 	}
+	
+	
 
 	@Override
 	public String getName() {

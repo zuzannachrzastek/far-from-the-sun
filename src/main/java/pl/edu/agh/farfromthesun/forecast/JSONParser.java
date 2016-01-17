@@ -11,14 +11,11 @@ public class JSONParser implements IWeatherParser{
 
     private static final int errorWeatherStringLength = 300;
 
-    public WeatherLocation GetForecast(LocalDate date, Location point){
-        URLConnectionReader urlConnReader = new URLConnectionReader();
-        WeatherLocation forecastToReturn = GetEmptyForecastDataObject(date, point);
-        try {
-            String forecastDataString = urlConnReader.GetForecastData(GetStringCoordinates(point));
+    public WeatherLocation getForecast(LocalDate date, Location point, String forecastDataString) {
 
-            if(forecastDataString == null || forecastDataString.length() < errorWeatherStringLength)
-                return GetEmptyForecastDataObject(date, point);
+        WeatherLocation forecastToReturn = getEmptyForecastDataObject(date, point);
+            if (forecastDataString == null || forecastDataString.length() < errorWeatherStringLength)
+                return getEmptyForecastDataObject(date, point);
 
             //System.out.print(forecastDataString);
             final JSONObject obj = new JSONObject(forecastDataString);
@@ -31,27 +28,19 @@ public class JSONParser implements IWeatherParser{
             for (int i = 0; i < n; ++i) {
                 final JSONObject fData = forecastData.getJSONObject(i);
                 final JSONObject day = fData.getJSONObject("date");
-                if(day.getInt("day") == date.getDayOfMonth()
+                if (day.getInt("day") == date.getDayOfMonth()
                         && day.getInt("month") == date.getMonthValue()
-                        && day.getInt("year") == date.getYear()){
-                    forecastToReturn = GetForecastData(fData, date, point);
-                    ForecastCache.AddToCache(forecastToReturn);
+                        && day.getInt("year") == date.getYear()) {
+                    forecastToReturn = createForecastData(fData, date, point);
+                    ForecastCache.addToCache(forecastToReturn);
                     continue;
                 }
-                ForecastCache.AddToCache(GetForecastData(fData, LocalDate.of(currDate.getYear(), currDate.getMonthValue(),currDate.getDayOfMonth() + i), point));
+                ForecastCache.addToCache(createForecastData(fData, LocalDate.of(currDate.getYear(), currDate.getMonthValue(), currDate.getDayOfMonth() + i), point));
             }
-        } catch (IOException e) {
-            e.printStackTrace(); //?
-            return GetEmptyForecastDataObject(date, point);
-    }
         return forecastToReturn;
     }
 
-    private String GetStringCoordinates(Location point){
-        return String.valueOf(point.getLat()) + "," + String.valueOf(point.getLon());
-    }
-
-    private WeatherLocation GetForecastData(JSONObject data, LocalDate date, Location point){
+    private WeatherLocation createForecastData(JSONObject data, LocalDate date, Location point){
         WeatherLocation forecastDataObject = new WeatherLocation(point);
         forecastDataObject.setDate(date);
         forecastDataObject.setIconUrl(data.getString("icon_url"));
@@ -88,7 +77,7 @@ public class JSONParser implements IWeatherParser{
         forecastDataObject.setAveHumidity(data.getInt("avehumidity"));
         return forecastDataObject;
     }
-    private WeatherLocation GetEmptyForecastDataObject(LocalDate date, Location point){
+    public WeatherLocation getEmptyForecastDataObject(LocalDate date, Location point){
         WeatherLocation fd = new WeatherLocation(point);
         fd.setDate(date);
         return fd;

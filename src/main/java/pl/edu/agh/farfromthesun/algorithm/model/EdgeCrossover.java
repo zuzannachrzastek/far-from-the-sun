@@ -10,99 +10,90 @@ import pl.edu.agh.farfromthesun.map.Location;
 public class EdgeCrossover implements Crossover, Nameable {
 
 	@Override
+	public String getName() {
+		return "Edge crossover";
+	}
+
+	@Override
 	public Tour cross(Tour a, Tour b) {
-		Map<Integer, HashMap<Integer, Integer>> points = new HashMap<Integer, HashMap<Integer, Integer>>();
-		Map<Location, Integer> point2int = new HashMap<Location, Integer>();
+		int[][] edges = generateEdgeArray(a, b);
 		Set<Integer> added = new HashSet<Integer>();
-		for (int i = 0; i < a.tourSize(); i++) {
-			points.put(i, new HashMap<Integer, Integer>());
-			for (int j = 0; j < a.tourSize(); j++) {
-				points.get(i).put(j, 0);
-			}
-		}
-		Tour child = new Tour();
-		for (int i = 0; i < a.tourSize(); i++) {
-			point2int.put(a.getPointAt(i), i);
-		}
-		int tmp = point2int.get(a.getPointAt(1));
-		points.get(0).replace(tmp, points.get(0).get(tmp) + 1);
-		
-		tmp = point2int.get(a.getPointAt(a.tourSize() - 1));
-		points.get(0).replace(tmp, points.get(0).get(tmp) + 1);
-		
-		tmp = point2int.get(b.getPointAt(1));
-		points.get(0).replace(tmp, points.get(0).get(tmp) + 1);
-		
-		tmp = point2int.get(b.getPointAt(a.tourSize() - 1));
-		points.get(0).replace(tmp, points.get(0).get(tmp) + 1);
-		
-		for (int i = 1; i < a.tourSize(); i++) {
-			tmp = point2int.get(a.getPointAt((i + 1) % a.tourSize()));
-			points.get(i).replace(tmp, points.get(i).get(tmp) + 1);
-			
-			tmp = point2int.get(a.getPointAt(i - 1));
-			points.get(i).replace(tmp, points.get(i).get(tmp) + 1);
-			
-			tmp = point2int.get(b.getPointAt((i + 1) % a.tourSize()));
-			points.get(i).replace(tmp, points.get(i).get(tmp) + 1);
-			
-			tmp = point2int.get(b.getPointAt(i - 1));
-			points.get(i).replace(tmp, points.get(i).get(tmp) + 1);
-		}
+		Tour child = new Tour( a.getManager() );
 		
 		child.setPoint(0, a.getPointAt(0));
 		added.add(0);
 		int lastPoint = 0;
 		int nextPoint = 0;
 		for (int i = 1; i < a.tourSize(); i++) {
-			nextPoint = getNextPoint(points, lastPoint, added);
+			nextPoint = getNextPoint(edges, lastPoint, added);
 			added.add(nextPoint);
-			removePoint(points, lastPoint);
+			removePoint(edges, lastPoint);
 			child.setPoint(i, a.getPointAt(nextPoint));
 			lastPoint = nextPoint;
 		}
 		return child;
 	}
-
-	@Override
-	public String getName() {
-		return "Edge crossover";
+	
+	private int[][] generateEdgeArray(Tour a, Tour b){
+		int[][] edges = new int[a.tourSize()][];
+		for(int i = 0; i < a.tourSize(); i++){
+			edges[i] = new int[a.tourSize()];
+		}
+		
+		Map<Location, Integer> point2int = new HashMap<Location, Integer>();
+		for (int i = 0; i < a.tourSize(); i++) {
+			point2int.put(a.getPointAt(i), i);
+		}
+		
+		//add edges between first point and his neighbors in both parents
+		edges[0][point2int.get(a.getPointAt(1))] += 1;
+		edges[0][point2int.get(a.getPointAt(a.tourSize() - 1))] += 1;
+		edges[0][point2int.get(b.getPointAt(1))] += 1;
+		edges[0][point2int.get(b.getPointAt(a.tourSize() - 1))] += 1;
+		
+		for (int i = 1; i < a.tourSize(); i++) {
+			edges[i][point2int.get(a.getPointAt((i + 1) % a.tourSize()))] += 1; //add edge between points actual point and next point
+			edges[i][point2int.get(a.getPointAt(i - 1))] += 1; //add edge between points actual point and previous point
+			edges[i][point2int.get(b.getPointAt((i + 1) % a.tourSize()))] += 1; //same for the second parent
+			edges[i][point2int.get(b.getPointAt(i - 1))] += 1;
+		}
+		return edges;		
 	}
 
-	private int getNextPoint(Map<Integer, HashMap<Integer, Integer>> points, int actualPoint, Set<Integer> added) {
+	private int getNextPoint(int[][] edges, int actualPoint, Set<Integer> added) {
 		int next = 0;
 		int shortest = 5;
-		for (int i = 0; i < points.size(); i++) {
-			if (points.get(i).get(actualPoint) == 2) {
+		for (int i = 0; i < edges[0].length; i++) {
+			if (edges[i][actualPoint] == 2) {
 				return i;
 			}
-			if (points.get(i).get(actualPoint) > 0) {
-				if (shortest > mapNotZeroElements(points.get(i))) {
-					shortest = mapNotZeroElements(points.get(i));
+			if (edges[i][actualPoint] > 0) {
+				if (shortest > tabNotZeroElements(edges[i])) {
+					shortest = tabNotZeroElements(edges[i]);
 					next = i;
 				}
 			}
 		}
 		while (added.contains(next)) {
-			next = (int) (Math.random() * points.size());
+			next = (int) (Math.random() * edges.length);
 		}
 		return next;
 	}
 
-	private int mapNotZeroElements(HashMap<Integer, Integer> points) {
+	private int tabNotZeroElements(int[] tab) {
 		int sum = 0;
-		for (int i = 0; i < points.size(); i++) {
-			if (points.get(i) != 0) {
+		for (int i = 0; i < tab.length; i++) {
+			if (tab[i] != 0) {
 				sum++;
 			}
 		}
 		return sum;
 	}
 
-	private void removePoint(Map<Integer, HashMap<Integer, Integer>> points, int actualPoint) {
-		for (int i = 0; i < points.size(); i++) {
-			points.get(i).replace(actualPoint, 0);
-			points.get(actualPoint).replace(i, 0);
+	private void removePoint(int[][] edges, int actualPoint) {
+		for (int i = 0; i < edges.length; i++) {
+			edges[i][actualPoint] = 0;
+			edges[actualPoint][i] = 0;
 		}
 	}
 }

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import pl.edu.agh.farfromthesun.app.App;
 import pl.edu.agh.farfromthesun.forecast.WeatherLocation;
 
 public class Tour {
@@ -12,14 +11,20 @@ public class Tour {
 	private double distance = 0;
 	private double fitness = 0;
 	private double temperature = Double.MAX_VALUE;
+	private TourManager manager;
 
-	public Tour() {
-		for (int i = 1; i < TourManager.numberOfPoints(); i++) {
-			tour.add(new WeatherLocation(TourManager.getPoint(i)));
+	public Tour(TourManager manager) {
+		this.manager = manager;
+		this.shuffleLocations();
+	}
+
+	private void shuffleLocations() {
+		for (int i = 1; i < manager.numberOfPoints(); i++) {
+			tour.add(new WeatherLocation(manager.getPoint(i)));
 		}
 		Collections.shuffle(tour);
 		tour.add(tour.get(0));
-		tour.set(0, new WeatherLocation(TourManager.getPoint(0)));
+		tour.set(0, new WeatherLocation(manager.getPoint(0)));
 	}
 
 	public void setPoint(int position, WeatherLocation point) {
@@ -29,37 +34,45 @@ public class Tour {
 		temperature = Double.MAX_VALUE;
 	}
 
+	private void calculateDistance() {
+		distance += getFirstPoint().distanceTo(getLastPoint());
+
+		for (int i = 1; i < tour.size(); i++) {
+			distance += getPointAt(i).distanceTo(getPointAt(i - 1));
+		}
+	}
+
 	public double getDistance() {
 		if (distance == 0) {
-			distance += getFirstPoint().distanceTo(getLastPoint());
-
-			for (int i = 1; i < tour.size(); i++) {
-				distance += getPointAt(i).distanceTo(getPointAt(i - 1));
-			}
+			calculateDistance();
 		}
 
 		return distance;
 	}
 
+	private void calculateTemperature() {
+		temperature = 0;
+
+		WeatherLocation loc;
+		LocalDate date = manager.getParameters().getDate();
+		int c = 0;
+
+		for (int i = 0; i < tour.size(); i++) {
+			loc = manager.getForecast()
+					.getForecast(date.plusDays(i), getPointAt(i));
+
+			if (loc != null) {
+				tour.set(i, loc);
+				temperature += loc.getHighTemp();
+			}
+		}
+
+		temperature /= c;
+	}
+
 	public double getAvgTemperature() {
 		if (temperature == Double.MAX_VALUE) {
-			temperature = 0;
-
-			WeatherLocation loc;
-			LocalDate date = Parameters.getInstance().getDate();
-			int c = 0;
-
-			for (int i = 0; i < tour.size(); i++) {
-				loc = App.getForecast().getForecast(date.plusDays(i),
-						getPointAt(i));
-
-				if (loc != null){
-					tour.set(i, loc);
-					temperature += loc.getHighTemp();
-				}
-			}
-
-			temperature /= c;
+			calculateTemperature();
 		}
 
 		return temperature;
@@ -68,20 +81,22 @@ public class Tour {
 	// TODO add weather dependency
 	public double getFitness() {
 		if (fitness == 0) {
-			Parameters params = Parameters.getInstance();
-			double temp = params.getTemperature();
-			fitness = (100 / getDistance()) * (1.0-0.05*Math.abs(temp-getAvgTemperature()));
+			double temp = manager.getParameters().getTemperature();
+			fitness = (100 / getDistance())
+					* (1.0 - 0.05 * Math.abs(temp - getAvgTemperature()));
 		}
 		return fitness;
 	}
 
 	@Override
 	public String toString() {
-		String result = tour.get(0).toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append(tour.get(0).toString());
 		for (int i = 1; i < tour.size(); i++) {
-			result += "\n\n  |\n  V\n\n" + tour.get(i);
+			sb.append("\n\n  |\n  V\n\n");
+			sb.append(tour.get(i));
 		}
-		return result;
+		return sb.toString();
 	}
 
 	public int tourSize() {
@@ -102,5 +117,9 @@ public class Tour {
 
 	public ArrayList<WeatherLocation> getPoints() {
 		return tour;
+	}
+
+	public TourManager getManager() {
+		return manager;
 	}
 }

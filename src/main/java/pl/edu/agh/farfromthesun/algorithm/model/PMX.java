@@ -9,45 +9,41 @@ public class PMX implements Crossover, Nameable {
 
 	@Override
 	public Tour cross(Tour a, Tour b) {
-		int from = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		int to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		Tour child = new Tour();
-		Map<Location, Integer> parentA = new HashMap<Location, Integer>();
-		Map<Location, Integer> parentB = new HashMap<Location, Integer>();
-		for (int i = 1; i < a.tourSize(); i++) {
-			parentA.put(a.getPointAt(i), i);
-			parentB.put(b.getPointAt(i), i);
-		}
-		while (to == from) {
-			to = (int) ((Math.random() * (a.tourSize() - 1)) + 1);
-		}
-		if (from > to) {
-			from += to;
-			to = from - to;
-			from -= to;
-		}
-		for (int i = 1; i < a.tourSize(); i++) {
+		int from = (int) ((Math.random() * (a.tourSize() - 2)) + 1);
+		int to = (int) ((Math.random() * (a.tourSize() - from - 1)) + from);
+		Tour child = new Tour(a.getManager());
+		Map<Location, Integer> parentA = point2int(a);
+		Map<Location, Integer> parentB = point2int(b);
+		
+		for (int i = 1; i < a.tourSize(); i++) { //first point remains unchanged, rest will be changed
 			child.setPoint(i, null);
 		}
+		
 		for (int i = from; i <= to; i++) {
-			child.setPoint(i, a.getPointAt(i));
-			if (parentA.get(b.getPointAt(i)) != null && ((parentA.get(b.getPointAt(i)) < from) || (parentA.get(b.getPointAt(i)) > to))) {
+			child.setPoint(i, a.getPointAt(i)); //set points as they are in parent A
+			if ((parentA.get(b.getPointAt(i)) < from) || (parentA.get(b.getPointAt(i)) > to)) { //if point at position 'i' in parent B is not in range(from, to)
 				int newPos = parentB.get(a.getPointAt(i));
 				while (newPos >= from && newPos <= to) {
-					if(parentB.get(a.getPointAt(newPos)) == newPos){
-						break;
-					}
 					newPos = parentB.get(a.getPointAt(newPos));
 				}
 				child.setPoint(newPos, b.getPointAt(i));
 			}
 		}
+		
 		for (int i = 1; i < a.tourSize(); i++) {
 			if(child.getPointAt(i) == null){
-				child.setPoint(i, b.getPointAt(i));
+				child.setPoint(i, b.getPointAt(i)); //set remaining points as they are in parent B
 			}
 		}
 		return child;
+	}
+	
+	private Map<Location, Integer> point2int(Tour tour){
+		Map<Location, Integer> map = new HashMap<Location, Integer>();
+		for (int i = 1; i < tour.tourSize(); i++) {
+			map.put(tour.getPointAt(i), i);
+		}
+		return map;
 	}
 
 	@Override
