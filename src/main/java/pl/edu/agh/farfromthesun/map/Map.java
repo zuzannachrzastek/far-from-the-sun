@@ -32,12 +32,12 @@ public class Map implements AlgorithmObserver, JMapViewerEventListener, Componen
 	private List<WeatherLocation> places = new ArrayList<>();
 	private JMapViewer treeMap;
 	private boolean listenerFlag = true;
-	final Dimension MAP_DIMENSION = new Dimension(700,600);
+	//final Dimension MAP_DIMENSION = new Dimension(700,600);
 	@Override
 	public void initialize(JFrame frame) {
 
 		treeMap = new JMapViewer();
-		treeMap.setPreferredSize(MAP_DIMENSION);
+		//treeMap.setPreferredSize(MAP_DIMENSION);
 		treeMap.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (listenerFlag) {
