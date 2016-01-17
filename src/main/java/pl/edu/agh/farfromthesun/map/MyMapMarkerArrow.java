@@ -15,6 +15,8 @@ public class MyMapMarkerArrow extends MapPolygonImpl {
         super(null, null, points);
     }
     final int ARROW_LENGHT = 20;
+    final double ANGLE_CONST = (1/Math.sqrt(2));
+
     @Override
     public void paint(Graphics g, List<Point> points) {
         Graphics2D g2d = (Graphics2D) g.create();
@@ -35,69 +37,29 @@ public class MyMapMarkerArrow extends MapPolygonImpl {
             }
 
             int pointsSize = points.size() - 1;
+            double x = points.get(pointsSize).getX()-points.get(0).getX();
+            double y = points.get(pointsSize).getY()-points.get(0).getY();
 
-            //pierwszy punkt nizej
-            if (points.get(0).getY() > points.get(1).getY()) {
-                // i po lewej
-                if (points.get(0).getX() > points.get(1).getX()) {
-                    downLeft(path,points,pointsSize);
-                }
-                // i po prawej
-                else {
-                    downRight(path,points,pointsSize);
-                }
-            //pierwszy punkt wyzej
-            } else {
-                // i po lewej
-                if (points.get(0).getX() > points.get(1).getX()) {
-                    upLeft(path,points,pointsSize);
-                }
-                else {
-                    upRight(path,points,pointsSize);
-                }
-            }
+
+            double length = (20/Math.sqrt((Math.pow(x, 2)+ Math.pow(y, 2))));
+
+            double x1 = (x*ANGLE_CONST + y*ANGLE_CONST)*length;
+            double y1 = (-x*ANGLE_CONST + y*ANGLE_CONST)*length;
+
+            double x2 = ((x*ANGLE_CONST) + (y*(-ANGLE_CONST)))*length;
+            double y2 = ((x*ANGLE_CONST) + (y*ANGLE_CONST))*length;
+
+            path.lineTo(points.get(pointsSize).getX()- x1,
+                    points.get(pointsSize).getY() - y1);
+
+            path.moveTo(points.get(pointsSize).getX(),
+                    points.get(pointsSize).getY());
+
+            path.lineTo(points.get(pointsSize).getX() - x2,
+                    points.get(pointsSize).getY() - y2);
+
         }
         return path;
     }
-    //metody do rysowania strzalki
-    private void downLeft(Path2D path, List<Point> points, int pointsSize){
-        path.lineTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY() + ARROW_LENGHT);
 
-        path.moveTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY());
-
-        path.lineTo(points.get(pointsSize).getX() + ARROW_LENGHT,
-                points.get(pointsSize).getY());
-    }
-    private void downRight(Path2D path, List<Point> points, int pointsSize){
-        path.lineTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY() + ARROW_LENGHT);
-
-        path.moveTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY());
-
-        path.lineTo(points.get(pointsSize).getX() - ARROW_LENGHT,
-                points.get(pointsSize).getY());
-    }
-    private void upLeft(Path2D path, List<Point> points, int pointsSize){
-        path.lineTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY() - ARROW_LENGHT);
-
-        path.moveTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY());
-
-        path.lineTo(points.get(pointsSize).getX() + ARROW_LENGHT,
-                points.get(pointsSize).getY());
-    }
-    private void upRight(Path2D path, List<Point> points, int pointsSize){
-        path.lineTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY() - ARROW_LENGHT);
-
-        path.moveTo(points.get(pointsSize).getX(),
-                points.get(pointsSize).getY());
-
-        path.lineTo(points.get(pointsSize).getX() - ARROW_LENGHT,
-                points.get(pointsSize).getY());
-    }
 }
